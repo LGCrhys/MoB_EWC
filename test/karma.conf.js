@@ -51,6 +51,7 @@ module.exports = function(config) {
       'bower_components/angular-gridster/src/angular-gridster.js',
       'bower_components/leaflet/dist/leaflet-src.js',
       'bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
+      'bower_components/leaflet-search/dist/leaflet-search.src.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

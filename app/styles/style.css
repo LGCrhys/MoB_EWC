@@ -4,7 +4,6 @@ ul {
 }
 .box {
     height: 100%;
-    /* border: 1px solid #ccc; */
     background-color: #fff;
 }
 .box-header {
@@ -51,7 +50,6 @@ form {
     margin-bottom: 0;
 }
 .gridster {
-    border: 1px solid #ccc;
 }
 .gridster-item {
     border: 1px solid #ccc;

@@ -15,18 +15,41 @@
     <link rel="stylesheet" href="../bower_components/angular-gridster/dist/angular-gridster.css"/>
     <script src="../bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
 
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <script src="../bower_components/leaflet/dist/leaflet.js"></script>
     <script src="../bower_components/leaflet-plugins/layer/tile/Bing.js"></script>
-    <script src="../bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <script src="../bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>    
+    <script src="../bower_components/Leaflet.label/dist/leaflet.label.js"></script>
+    <script src="../bower_components/leaflet-search/dist/leaflet-search.src.js"></script>
+    
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
     <script src="bower_components/underscore/underscore.js"></script>
     <script src = "data/Loc.js"></script>
+    <link rel="stylesheet" href="../bower_components/leaflet-search/dist/leaflet-search.min.css" />
+    <link rel="stylesheet" href="../bower_components/Leaflet.label/dist/leaflet.label.css" />
     <script src="scripts/script.js"></script>
     <script src="scripts/dataService.js"></script>
 
   </head>
 
   <body ng-controller="MainCtrl">
+
+  <nav class="navbar navbar-inverse">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">MoB EWC</a>
+    </div>
+  </nav>  
 
   <div gridster="gridsterOptions">
 
@@ -68,7 +91,7 @@
             <h3>Leaflet Map</h3>
           </div>
           <div class="map" ng-controller="LeafletMapsController">
-            <leaflet lf-center="brest" layers="layers" markers="markers" width="100%" height="95%"></leaflet>
+              <leaflet lf-center="center" controls="controls" layers="layers" markers="markers" width="100%" height="95%"></leaflet>
           </div>
         </div>
       </li>
