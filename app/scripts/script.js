@@ -103,6 +103,7 @@ app
   }, 200);
 
 
-  $scope.datatable = DataService.getDatatable();
+  $scope.datatable = DataService.getRadars();
 
+  console.log(DataService.getRadarByFrequency())
 });

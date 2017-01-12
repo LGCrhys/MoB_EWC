@@ -1,5 +1,13 @@
+var getRadars = (function (){
+  var radars =_.flatten(_.pluck(locs, "Radars"));
+  return function(){
+    return radars;
+  }
+})();
+
 angular.module('plunker.services', [])
 .factory('DataService', function() {
+
   return {
     lineChart: {
       options: lineChartOptions,
@@ -17,7 +25,8 @@ angular.module('plunker.services', [])
       options: candlestickBarChartOptions,
       data: candlestickBarChartData
     },
-    getDatatable : getDatatable
+    getRadars : getRadars,
+    getRadarByFrequency : getRadarByFrequency
   };
 
 
@@ -314,12 +323,44 @@ angular.module('plunker.services', [])
   ]}];
   }
 
-  function getDatatable(){
-    return [
-      {name : "Paul", age :42},
-      {name : "Bob", age :41},
-      {name : "John", age :32},
-      {name : "Henri", age :22},
-    ]
+
+
+  function getRadarByFrequency(){
+    var modes =_.flatten(_.map(getRadars(), function(radar){return radar.modes}))
+    var modeByFrequency  = {
+                  "3000-4000":0,
+                  "4001-5000":0,
+                  "5001-6000":0,
+                  "6001-7000":0,
+                  "7001-8000":0,
+                  "8001-9000":0,
+                  "9001-10000":0
+                };
+    function reduction(memo, mode){
+      var frequence = parseFloat(mode.sousMode.frequence);
+      if(frequence>=3000 && frequence<=4000){
+        memo["3000-4000"] = memo["3000-4000"] +1;
+      }
+      if(frequence>=4001 && frequence<=5000){
+        memo["4001-5000"] = memo["4001-5000"] +1;
+      }
+      if(frequence>=5001 && frequence<=6000){
+        memo["5001-6000"] = memo["5001-6000"] +1;
+      }
+      if(frequence>=6001 && frequence<=7000){
+        memo["6001-7000"] = memo["6001-7000"] +1;
+      }
+      if(frequence>=7001 && frequence<=8000){
+        memo["7001-8000"] = memo["7001-8000"] +1;
+      }
+      if(frequence>=8001 && frequence<=9000){
+        memo["8001-9000"] = memo["8001-9000"] +1;
+      }
+      if(frequence>=9001 && frequence<=10000){
+        memo["9001-10000"] = memo["9001-10000"] +1;
+      }
+      return memo;
+    }
+    return  _.reduce(modes, reduction, modeByFrequency);
   }
 });

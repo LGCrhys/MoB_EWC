@@ -1,4 +1,4 @@
-[
+var data = [
   {
     "Loc": {
       "_id": "5877988518c02732aefcd670",
@@ -16459,3 +16459,5 @@
     }
   }
 ]
+
+var locs = _.pluck(data, "Loc")

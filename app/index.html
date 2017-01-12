@@ -14,9 +14,11 @@
 
     <link rel="stylesheet" href="https://raw.githack.com/ManifestWebDesign/angular-gridster/v0.13.5/dist/angular-gridster.min.css"/>
     <script src="https://raw.githack.com/ManifestWebDesign/angular-gridster/v0.13.5/dist/angular-gridster.min.js"></script>
-
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src = "data/Loc.js"></script>
     <script src="scripts/script.js"></script>
     <script src="scripts/dataService.js"></script>
+
   </head>
 
   <body ng-controller="MainCtrl">
@@ -45,9 +47,9 @@
             <div class="box-content-padded">
               Filter : <input ng-model="$scope.filerCriteria">
               <table>
-                  <tr ng-repeat="item in datatable">
-                    <td>{{item.name}}</td>
-                    <td>{{item.age}}</td>
+                  <tr ng-repeat="radar in datatable">
+                    <td>{{radar.nom}}</td>
+                    <td>{{radar.dateMaj}}</td>
                   </tr>
               </table>
 
