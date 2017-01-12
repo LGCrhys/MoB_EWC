@@ -12,17 +12,23 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.5/angular-nvd3.min.js"></script>
     
-    <link rel="stylesheet" href="https://raw.githack.com/ManifestWebDesign/angular-gridster/v0.13.5/dist/angular-gridster.min.css"/>
-    <script src="https://raw.githack.com/ManifestWebDesign/angular-gridster/v0.13.5/dist/angular-gridster.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/angular-gridster/dist/angular-gridster.css"/>
+    <script src="../bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
+
+    <script src="../bower_components/leaflet/dist/leaflet.js"></script>
+    <script src="../bower_components/leaflet-plugins/layer/tile/Bing.js"></script>
+    <script src="../bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
+    <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
     
     <script src="scripts/script.js"></script>
     <script src="scripts/dataService.js"></script>
   </head>
 
   <body ng-controller="MainCtrl">
-    
+
   <div gridster="gridsterOptions">
-  	<ul class="with-3d-shadow with-transitions">
+
+  	<ul class="with-3d-shadow with-transitions">    
   		<li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
   		  <div class="box">
             <div class="box-header">
@@ -37,10 +43,19 @@
             </div>
         </div>
   		</li>
-  	</ul>
+      <li gridster-item col="0" row="1" size-x="1" size-y="1">    
+        <div class="box">
+          <div class="box-header">
+              <h3>Leaflet Map</h3>
+          </div>
+          <div class="map" ng-controller="LeafletMapsController">
+              <leaflet lf-center="brest" layers="layers" markers="markers" width="100%" height="95%"></leaflet>
+          </div>
+        </div>
+      </li>
+  	</ul>    
   </div>
-    
-  <br><a href="http://krispo.github.io/angular-nvd3/" target="_blank" style="float: right;">See more</a>
+  
   </body>
 
 </html>
