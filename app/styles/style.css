@@ -32,6 +32,11 @@ ul {
     padding: 0px;
     padding-top: 30px;
 }
+.map {
+  padding-top: 30px;
+  height: 100%;
+  display: block;
+}
 .box-header-btns {
     top: 15px;
     right: 10px;

@@ -1,4 +1,4 @@
-var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services']);
+var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive']);
 
 app
 .controller('MainCtrl', function($scope, $timeout, DataService) {
@@ -101,9 +101,52 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
-
-
   $scope.datatable = DataService.getRadars();
 
   console.log(DataService.getRadarByFrequency())
 });
+app.controller("LeafletMapsController", [ "$scope", function($scope) {
+            angular.extend($scope, {
+                brest: {
+                    lat: 48.4000000,
+                    lng: -4.4833300,
+                    zoom: 5
+                },
+                markers: {
+                    brest: {
+	                    lat: 48.4000000,
+	                    lng: -4.4833300,
+                    }
+                },
+                layers: {
+                    baselayers: {
+                        bingAerial: {
+                            name: 'Bing Aerial',
+                            type: 'bing',
+                            key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
+                            layerOptions: {
+                                type: 'Aerial'
+                            }
+                        },
+                        bingRoad: {
+                            name: 'Bing Road',
+                            type: 'bing',
+                            key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
+                            layerOptions: {
+                                type: 'Road'
+                            }
+                        },
+                        bingAerialWithLabels: {
+                            name: 'Bing Aerial With Labels',
+                            type: 'bing',
+                            key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
+                            layerOptions: {
+                                type: 'AerialWithLabels'
+                            }
+                        },
+
+
+                    }
+                }
+            });
+}]);
