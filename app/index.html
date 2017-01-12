@@ -11,7 +11,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-nvd3/1.0.5/angular-nvd3.min.js"></script>
-    
+
     <link rel="stylesheet" href="../bower_components/angular-gridster/dist/angular-gridster.css"/>
     <script src="../bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
 
@@ -21,17 +21,18 @@
 
     <script src="../bower_components/leaflet/dist/leaflet.js"></script>
     <script src="../bower_components/leaflet-plugins/layer/tile/Bing.js"></script>
-    <script src="../bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>    
+    <script src="../bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.min.js"></script>
     <script src="../bower_components/Leaflet.label/dist/leaflet.label.js"></script>
     <script src="../bower_components/leaflet-search/dist/leaflet-search.src.js"></script>
-    
+
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" />
     <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
     <script src="bower_components/underscore/underscore.js"></script>
-    <script src = "data/Loc.js"></script>
     <link rel="stylesheet" href="../bower_components/leaflet-search/dist/leaflet-search.min.css" />
     <link rel="stylesheet" href="../bower_components/Leaflet.label/dist/leaflet.label.css" />
+    <script src = "data/Locs.js"></script>
+    <script src = "data/carriers.js"></script>
     <script src="scripts/script.js"></script>
     <script src="scripts/dataService.js"></script>
 
@@ -49,11 +50,11 @@
       </button>
       <a class="navbar-brand" href="#">MoB EWC</a>
     </div>
-  </nav>  
+  </nav>
 
   <div gridster="gridsterOptions">
 
-  	<ul class="with-3d-shadow with-transitions">    
+  	<ul class="with-3d-shadow with-transitions">
   		<li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
   		  <div class="box">
             <div class="box-header">

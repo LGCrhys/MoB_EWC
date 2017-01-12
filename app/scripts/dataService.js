@@ -1,7 +1,17 @@
 var getRadars = (function (){
-  var radars =_.flatten(_.pluck(locs, "Radars"));
+  function setOrigin(radar, origin){
+    radar.origin = origin;
+    return radar
+  }
+  var radarsLocs =_.map(_.flatten(_.pluck(locs, "Radars")), function(radar){return setOrigin(radar, 'Loc') });
+  var radarsCarriers = _.map(_.flatten(_.pluck(carriers, "Radars")), function(radar){return setOrigin(radar, 'Carrier')});
+  var radars = radarsLocs.concat(radarsCarriers);
   return function(){
-    return radars;
+    return {
+      radars:radars,
+      radarsCarriers:radarsCarriers,
+      radarsLocs:radarsLocs
+    };
   }
 })();
 
@@ -123,41 +133,8 @@ angular.module('plunker.services', [])
 	function discreteBarChartData() {
 	  return [
             {
-                key: "Cumulative Return",
-                values: [
-                    {
-                        "label" : "A" ,
-                        "value" : 29.765957771107
-                    } ,
-                    {
-                        "label" : "B" ,
-                        "value" : 0
-                    } ,
-                    {
-                        "label" : "C" ,
-                        "value" : 32.807804682612
-                    } ,
-                    {
-                        "label" : "D" ,
-                        "value" : 196.45946739256
-                    } ,
-                    {
-                        "label" : "E" ,
-                        "value" : 0.19434030906893
-                    } ,
-                    {
-                        "label" : "F" ,
-                        "value" : 98.079782601442
-                    } ,
-                    {
-                        "label" : "G" ,
-                        "value" : 13.925743130903
-                    } ,
-                    {
-                        "label" : "H" ,
-                        "value" : 5.1387322875705
-                    }
-                ]
+                key: "Radar by Frequency",
+                values: getRadarByFrequency()
             }
         ];
 	}
@@ -326,38 +303,38 @@ angular.module('plunker.services', [])
 
 
   function getRadarByFrequency(){
-    var modes =_.flatten(_.map(getRadars(), function(radar){return radar.modes}))
-    var modeByFrequency  = {
-                  "3000-4000":0,
-                  "4001-5000":0,
-                  "5001-6000":0,
-                  "6001-7000":0,
-                  "7001-8000":0,
-                  "8001-9000":0,
-                  "9001-10000":0
-                };
+    var modes =_.flatten(_.map(getRadars().radars, function(radar){return radar.modes}))
+    var modeByFrequency  = [
+                  {label:"3000-4000", value:0,},
+                  {label:"4001-5000", value:0,},
+                  {label:"5001-6000", value:0,},
+                  {label:"6001-7000", value:0,},
+                  {label:"7001-8000", value:0,},
+                  {label:"8001-9000", value:0,},
+                  {label:"9001-10000", value:0},
+                ];
     function reduction(memo, mode){
       var frequence = parseFloat(mode.sousMode.frequence);
       if(frequence>=3000 && frequence<=4000){
-        memo["3000-4000"] = memo["3000-4000"] +1;
+        memo[0].value = memo[0].value +1;
       }
       if(frequence>=4001 && frequence<=5000){
-        memo["4001-5000"] = memo["4001-5000"] +1;
+        memo[1].value = memo[1].value +1;
       }
       if(frequence>=5001 && frequence<=6000){
-        memo["5001-6000"] = memo["5001-6000"] +1;
+        memo[2].value = memo[2].value +1;
       }
       if(frequence>=6001 && frequence<=7000){
-        memo["6001-7000"] = memo["6001-7000"] +1;
+        memo[3].value = memo[3].value +1;
       }
       if(frequence>=7001 && frequence<=8000){
-        memo["7001-8000"] = memo["7001-8000"] +1;
+        memo[4].value = memo[4].value +1;
       }
       if(frequence>=8001 && frequence<=9000){
-        memo["8001-9000"] = memo["8001-9000"] +1;
+        memo[5].value = memo[5].value +1;
       }
       if(frequence>=9001 && frequence<=10000){
-        memo["9001-10000"] = memo["9001-10000"] +1;
+        memo[6].value = memo[6].value +1;
       }
       return memo;
     }
