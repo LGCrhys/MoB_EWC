@@ -8,18 +8,19 @@ angular.module('plunker.services', [])
     discreteBarChart: {
       options: discreteBarChartOptions,
       data: discreteBarChartData
-    }, 
+    },
     pieChart: {
       options: pieChartOptions,
       data: pieChartData
-    },  
+    },
     candlestickBarChart: {
       options: candlestickBarChartOptions,
       data: candlestickBarChartData
-    }  
+    },
+    getDatatable : getDatatable
   };
-  
-  
+
+
 	/**
 	 *  Data & Options Generators
 	 */
@@ -46,10 +47,10 @@ angular.module('plunker.services', [])
                         return d3.format('.02f')(d);
                     },
                     axisLabelDistance: -10
-                }, 
+                },
                 showLegend: false
             }
-        };  
+        };
 	}
 	function lineChartData() {
 	  var sin = [],sin2 = [], cos = [];
@@ -81,7 +82,7 @@ angular.module('plunker.services', [])
         }
     ];
 	}
-	
+
 	function discreteBarChartOptions() {
 	  return {
             chart: {
@@ -151,7 +152,7 @@ angular.module('plunker.services', [])
             }
         ];
 	}
-	 
+
   function pieChartOptions() {
     return {
             chart: {
@@ -204,7 +205,7 @@ angular.module('plunker.services', [])
             }
         ];
   }
-    
+
   function candlestickBarChartOptions() {
     return {
       chart: {
@@ -219,7 +220,7 @@ angular.module('plunker.services', [])
         y: function(d){ return d['close']; },
         transitionDuration: 100,
         useInteractiveGuideline: false,
-        
+
         xAxis: {
           axisLabel: 'Dates',
           tickFormat: function(d) {
@@ -312,5 +313,13 @@ angular.module('plunker.services', [])
       {"date": 15953, "open": 165.85, "high": 166.4, "low": 165.73, "close": 165.96, "volume": 62930500, "adjusted": 165.96}
   ]}];
   }
-  
+
+  function getDatatable(){
+    return [
+      {name : "Paul", age :42},
+      {name : "Bob", age :41},
+      {name : "John", age :32},
+      {name : "Henri", age :22},
+    ]
+  }
 });

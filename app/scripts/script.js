@@ -101,4 +101,8 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
+
+
+  $scope.datatable = DataService.getDatatable();
+
 });
