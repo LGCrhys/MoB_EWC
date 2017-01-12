@@ -1,5 +1,13 @@
+var getRadars = (function (){
+  var radars =_.flatten(_.pluck(locs, "Radars"));
+  return function(){
+    return radars;
+  }
+})();
+
 angular.module('plunker.services', [])
 .factory('DataService', function() {
+
   return {
     lineChart: {
       options: lineChartOptions,
@@ -8,18 +16,20 @@ angular.module('plunker.services', [])
     discreteBarChart: {
       options: discreteBarChartOptions,
       data: discreteBarChartData
-    }, 
+    },
     pieChart: {
       options: pieChartOptions,
       data: pieChartData
-    },  
+    },
     candlestickBarChart: {
       options: candlestickBarChartOptions,
       data: candlestickBarChartData
-    }  
+    },
+    getRadars : getRadars,
+    getRadarByFrequency : getRadarByFrequency
   };
-  
-  
+
+
 	/**
 	 *  Data & Options Generators
 	 */
@@ -46,10 +56,10 @@ angular.module('plunker.services', [])
                         return d3.format('.02f')(d);
                     },
                     axisLabelDistance: -10
-                }, 
+                },
                 showLegend: false
             }
-        };  
+        };
 	}
 	function lineChartData() {
 	  var sin = [],sin2 = [], cos = [];
@@ -81,7 +91,7 @@ angular.module('plunker.services', [])
         }
     ];
 	}
-	
+
 	function discreteBarChartOptions() {
 	  return {
             chart: {
@@ -151,7 +161,7 @@ angular.module('plunker.services', [])
             }
         ];
 	}
-	 
+
   function pieChartOptions() {
     return {
             chart: {
@@ -204,7 +214,7 @@ angular.module('plunker.services', [])
             }
         ];
   }
-    
+
   function candlestickBarChartOptions() {
     return {
       chart: {
@@ -219,7 +229,7 @@ angular.module('plunker.services', [])
         y: function(d){ return d['close']; },
         transitionDuration: 100,
         useInteractiveGuideline: false,
-        
+
         xAxis: {
           axisLabel: 'Dates',
           tickFormat: function(d) {
@@ -312,5 +322,45 @@ angular.module('plunker.services', [])
       {"date": 15953, "open": 165.85, "high": 166.4, "low": 165.73, "close": 165.96, "volume": 62930500, "adjusted": 165.96}
   ]}];
   }
-  
+
+
+
+  function getRadarByFrequency(){
+    var modes =_.flatten(_.map(getRadars(), function(radar){return radar.modes}))
+    var modeByFrequency  = {
+                  "3000-4000":0,
+                  "4001-5000":0,
+                  "5001-6000":0,
+                  "6001-7000":0,
+                  "7001-8000":0,
+                  "8001-9000":0,
+                  "9001-10000":0
+                };
+    function reduction(memo, mode){
+      var frequence = parseFloat(mode.sousMode.frequence);
+      if(frequence>=3000 && frequence<=4000){
+        memo["3000-4000"] = memo["3000-4000"] +1;
+      }
+      if(frequence>=4001 && frequence<=5000){
+        memo["4001-5000"] = memo["4001-5000"] +1;
+      }
+      if(frequence>=5001 && frequence<=6000){
+        memo["5001-6000"] = memo["5001-6000"] +1;
+      }
+      if(frequence>=6001 && frequence<=7000){
+        memo["6001-7000"] = memo["6001-7000"] +1;
+      }
+      if(frequence>=7001 && frequence<=8000){
+        memo["7001-8000"] = memo["7001-8000"] +1;
+      }
+      if(frequence>=8001 && frequence<=9000){
+        memo["8001-9000"] = memo["8001-9000"] +1;
+      }
+      if(frequence>=9001 && frequence<=10000){
+        memo["9001-10000"] = memo["9001-10000"] +1;
+      }
+      return memo;
+    }
+    return  _.reduce(modes, reduction, modeByFrequency);
+  }
 });

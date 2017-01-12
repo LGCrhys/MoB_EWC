@@ -27,10 +27,15 @@ ul {
     height: 100%;
     padding: 0px;
 }
-.map {
-    padding-top: 30px;
+.box-content-padded {
     height: 100%;
-    display: block;
+    padding: 0px;
+    padding-top: 30px;
+}
+.map {
+  padding-top: 30px;
+  height: 100%;
+  display: block;
 }
 .box-header-btns {
     top: 15px;
