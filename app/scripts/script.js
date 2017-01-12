@@ -31,7 +31,8 @@ app
 	};
 
 	$scope.dashboard = {
-		widgets: [{
+		widgets: [		
+		{
 			col: 0,
 			row: 0,
 			sizeY: 1,
@@ -53,19 +54,7 @@ app
 			  data: DataService.pieChart.data(),
 			  api: {}
 			}
-		},
-     {
-			col: 2,
-			row: 0,
-			sizeY: 1,
-			sizeX: 2,
-			name: "Candlestick Bar Chart",
-			chart: {
-			  options: DataService.candlestickBarChart.options(),
-			  data: DataService.candlestickBarChart.data(),
-			  api: {}
-			}
-		}, {
+		},{
 			col: 0,
 			row: 2,
 			sizeY: 1,
@@ -144,8 +133,6 @@ app.controller("LeafletMapsController", [ "$scope", function($scope) {
                                 type: 'AerialWithLabels'
                             }
                         },
-
-
                     }
                 }
             });
