@@ -75,7 +75,7 @@
                 <h3>DataTable</h3>
             </div>
             <div class="box-content-padded">
-              Filter : <input ng-model="mainCtrl.filterCriteria">
+              Filter : <input ng-model="mainCtrl.filterCriteria.nom">
 
               <table>
                   <tr ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">

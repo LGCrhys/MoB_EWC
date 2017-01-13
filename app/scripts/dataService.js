@@ -35,6 +35,10 @@ angular.module('plunker.services', [])
       options: candlestickBarChartOptions,
       data: candlestickBarChartData
     },
+    stackedFrequencyRange:{
+      options: getStackedLocationByFrequencyChartOptions ,
+      data: getDataStackedRadarFrequencies
+    },
     getRadars : getRadars,
     getRadarByFrequency : getRadarByFrequency
   };
@@ -192,6 +196,49 @@ angular.module('plunker.services', [])
         ];
   }
 
+  function getStackedLocationByFrequencyChartOptions(){
+    return {
+        chart: {
+            type: 'multiBarChart',
+            //TODO find a way to lower the legend under the tiles title.
+            margin : {
+                top: 120,
+                right: 20,
+                bottom: 45,
+                left: 45
+            },
+            clipEdge: true,
+            duration: 500,
+            stacked: true,
+            xAxis: {
+                axisLabel: 'Plage de fréquence',
+                showMaxMin: false,
+                  tickFormat: getFrequencyRangeTickFunction()
+            },
+            yAxis: {
+                axisLabel: 'count',
+                axisLabelDistance: -20,
+                tickFormat: function(d) {return d;}
+            }
+        }
+    }
+  }
+  function getFrequencyRangeTickFunction(){
+    var tickLabels=[
+                  "3000-4000",
+                  "4001-5000",
+                  "5001-6000",
+                  "6001-7000",
+                  "7001-8000",
+                  "8001-9000",
+                  "9001-10000"
+    ];
+
+    return function(d){
+      return tickLabels[d];
+    }
+  }
+
   function candlestickBarChartOptions() {
     return {
       chart: {
@@ -339,5 +386,60 @@ angular.module('plunker.services', [])
       return memo;
     }
     return  _.reduce(modes, reduction, modeByFrequency);
+  }
+
+  function getDataStackedRadarFrequencies(){
+    var locsArray = prepareArrayForCountByFrequency();
+    var carriersArray=prepareArrayForCountByFrequency();
+    return [{
+          key: 'Loc',
+          color: '#bcbd22',
+          values: countRadarsByFrequency(getRadars().radarsLocs, locsArray)
+          },
+          {
+            key: 'Carrier',
+            color: '#1f77b4',
+            values: countRadarsByFrequency(getRadars().radarsCarriers, carriersArray)
+          }
+        ];
+  }
+
+  function countRadarsByFrequency(radars, resultArray){
+    var modes =_.flatten(_.map(radars, function(radar){return radar.modes}))
+    function reduction(memo, mode){
+      var frequence = parseFloat(mode.sousMode.frequence);
+      if(frequence>=3000 && frequence<=4000){
+        memo[0].y = memo[0].y +1;
+      }
+      if(frequence>=4001 && frequence<=5000){
+        memo[1].y = memo[1].y +1;
+      }
+      if(frequence>=5001 && frequence<=6000){
+        memo[2].y = memo[2].y +1;
+      }
+      if(frequence>=6001 && frequence<=7000){
+        memo[3].y = memo[3].y +1;
+      }
+      if(frequence>=7001 && frequence<=8000){
+        memo[4].y = memo[4].y +1;
+      }
+      if(frequence>=8001 && frequence<=9000){
+        memo[5].y = memo[5].y +1;
+      }
+      if(frequence>=9001 && frequence<=10000){
+        memo[6].y = memo[6].y +1;
+      }
+      return memo;
+    }
+    return  _.reduce(modes, reduction, resultArray);
+  }
+
+
+  function prepareArrayForCountByFrequency(){
+    var result =[];
+    for (var index=0; index<7; index++){
+      result.push({x:index, y:0});
+    }
+    return result
   }
 });

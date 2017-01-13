@@ -60,10 +60,10 @@ app
 			row: 2,
 			sizeY: 1,
 			sizeX: 2,
-			name: "Line Chart",
+			name: "Frequency range",
 			chart: {
-			  options: DataService.lineChart.options(),
-			  data: DataService.lineChart.data(),
+			  options: DataService.stackedFrequencyRange.options(),
+			  data: DataService.stackedFrequencyRange.data(),
 			  api: {}
 			}
 		}]
