@@ -69,25 +69,35 @@
             </div>
         </div>
   		</li>
-      <li gridster-item row="2" col="2" size-x="2" size-y="1">
+      <li gridster-item row="2" col="2" size-x="1" size-y="1">
         <div class="box">
           <div class="box-header">
-                <h3>DataTable</h3>
+                <h3>Radars</h3>
             </div>
             <div class="box-content-padded">
-              Filter : <input ng-model="mainCtrl.filterCriteria.nom">
-
-              <table>
-                  <tr ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">
-                    <td>{{radar.nom}}</td>
-                    <td>{{radar.dateMaj}}</td>
-                  </tr>
-              </table>
-
+              Filtrer par nom : <input ng-model="mainCtrl.filterCriteria.nom">
+              <div id="table-wrapper">
+                <div id="table-scroll">
+                  <table>
+                      <thead>
+                          <tr>
+                              <th><span class="text">Nom</span></th>
+                              <th><span class="text">Date mise à jour</span></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">
+                                  <td>{{radar.nom}}</td>
+                                  <td>{{radar.dateMaj}}</td>
+                                </tr>
+                      </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
         </div>
       </li>
-      <li gridster-item col="0" row="1" size-x="1" size-y="1">
+      <li gridster-item col="3" row="0" size-x="1" size-y="1">
         <div class="box">
           <div class="box-header">
             <h3>Leaflet Map</h3>

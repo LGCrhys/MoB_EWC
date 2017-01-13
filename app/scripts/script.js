@@ -38,10 +38,10 @@ app
 			row: 0,
 			sizeY: 1,
 			sizeX: 1,
-			name: "Discrete Bar Chart",
+			name: "Radars par fréquence",
 			chart: {
-			  options: DataService.discreteBarChart.options(),
-			  data: DataService.discreteBarChart.data(),
+			  options: DataService.frequencyRange.options(),
+			  data: DataService.frequencyRange.data(),
 			  api: {}
 			}
 		}, {
@@ -60,7 +60,7 @@ app
 			row: 2,
 			sizeY: 1,
 			sizeX: 2,
-			name: "Frequency range",
+			name: "Radars par fréquence",
 			chart: {
 			  options: DataService.stackedFrequencyRange.options(),
 			  data: DataService.stackedFrequencyRange.data(),

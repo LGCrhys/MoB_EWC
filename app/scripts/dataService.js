@@ -19,13 +19,9 @@ angular.module('plunker.services', [])
 .factory('DataService', function() {
 
   return {
-    lineChart: {
-      options: lineChartOptions,
-      data: lineChartData
-    },
-    discreteBarChart: {
-      options: discreteBarChartOptions,
-      data: discreteBarChartData
+    frequencyRange: {
+      options: frequencyRangeChartOptions,
+      data: frequencyRangeChartData
     },
     pieChart: {
       options: pieChartOptions,
@@ -44,74 +40,12 @@ angular.module('plunker.services', [])
   };
 
 
-	/**
-	 *  Data & Options Generators
-	 */
-	function lineChartOptions() {
-	  return {
-            chart: {
-                type: 'lineChart',
-                margin : {
-                    top: 40,
-                    right: 20,
-                    bottom: 40,
-                    left: 55
-                },
-                x: function(d){ return d.x; },
-                y: function(d){ return d.y; },
-                useInteractiveGuideline: true,
-                xAxis: {
-                    axisLabel: 'Time (ms)',
-                    axisLabelDistance: -5
-                },
-                yAxis: {
-                    axisLabel: 'Voltage (v)',
-                    tickFormat: function(d){
-                        return d3.format('.02f')(d);
-                    },
-                    axisLabelDistance: -10
-                },
-                showLegend: false
-            }
-        };
-	}
-	function lineChartData() {
-	  var sin = [],sin2 = [], cos = [];
-
-    //Data is represented as an array of {x,y} pairs.
-    for (var i = 0; i < 100; i++) {
-        sin.push({x: i, y: Math.sin(i/10)});
-        sin2.push({x: i, y: i % 10 == 5 ? null : Math.sin(i/10) *0.25 + 0.5});
-        cos.push({x: i, y: .5 * Math.cos(i/10+ 2) + Math.random() / 10});
-    }
-
-    //Line chart data should be sent as an array of series objects.
-    return [
-        {
-            values: sin,      //values - represents the array of {x,y} data points
-            key: 'Sine Wave', //key  - the name of the series.
-            color: '#ff7f0e'  //color - optional: choose your own line color.
-        },
-        {
-            values: cos,
-            key: 'Cosine Wave',
-            color: '#2ca02c'
-        },
-        {
-            values: sin2,
-            key: 'Another sine wave',
-            color: '#7777ff',
-            area: true      //area - set to true if you want this line to turn into a filled area chart.
-        }
-    ];
-	}
-
-	function discreteBarChartOptions() {
+	function frequencyRangeChartOptions() {
 	  return {
             chart: {
                 type: 'discreteBarChart',
                 margin : {
-                    top: 40,
+                    top: 10,
                     right: 20,
                     bottom: 30,
                     left: 55
@@ -124,17 +58,17 @@ angular.module('plunker.services', [])
                 },
                 duration: 500,
                 xAxis: {
-                    axisLabel: 'X Axis',
+                    axisLabel: 'Plage de fréquence',
                     axisLabelDistance: -10
                 },
                 yAxis: {
-                    axisLabel: 'Y Axis',
+                    axisLabel: 'total',
                     axisLabelDistance: -10
                 }
             }
         }
 	}
-	function discreteBarChartData() {
+	function frequencyRangeChartData() {
 	  return [
             {
                 key: "Radar by Frequency",
@@ -148,7 +82,7 @@ angular.module('plunker.services', [])
             chart: {
                 type: 'pieChart',
                 margin : {
-                    top: 30,
+                    top: 10,
                     right: 0,
                     bottom: 0,
                     left: 0
@@ -202,7 +136,7 @@ angular.module('plunker.services', [])
             type: 'multiBarChart',
             //TODO find a way to lower the legend under the tiles title.
             margin : {
-                top: 120,
+                top: 220,
                 right: 20,
                 bottom: 45,
                 left: 45
