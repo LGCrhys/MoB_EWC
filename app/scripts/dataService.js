@@ -23,10 +23,6 @@ angular.module('plunker.services', [])
       options: frequencyRangeChartOptions,
       data: frequencyRangeChartData
     },
-    pieChart: {
-      options: pieChartOptions,
-      data: pieChartData
-    },
     candlestickBarChart: {
       options: candlestickBarChartOptions,
       data: candlestickBarChartData
@@ -34,6 +30,10 @@ angular.module('plunker.services', [])
     stackedFrequencyRange:{
       options: getStackedLocationByFrequencyChartOptions ,
       data: getDataStackedRadarFrequencies
+    },
+    typeAndSubType:{
+      options: getTypeSubTypeSunBurstChartOptions,
+      data: getDataTypeSubTypeSunBurst
     },
     getRadars : getRadars,
     getRadarByFrequency : getRadarByFrequency
@@ -77,59 +77,6 @@ angular.module('plunker.services', [])
         ];
 	}
 
-  function pieChartOptions() {
-    return {
-            chart: {
-                type: 'pieChart',
-                margin : {
-                    top: 10,
-                    right: 0,
-                    bottom: 0,
-                    left: 0
-                },
-                x: function(d){return d.key;},
-                y: function(d){return d.y;},
-                showLabels: true,
-                duration: 500,
-                labelThreshold: 0.01,
-                labelSunbeamLayout: true,
-                showLegend: false
-            }
-        };
-  }
-  function pieChartData() {
-    return [
-            {
-                key: "One",
-                y: 5
-            },
-            {
-                key: "Two",
-                y: 2
-            },
-            {
-                key: "Three",
-                y: 9
-            },
-            {
-                key: "Four",
-                y: 7
-            },
-            {
-                key: "Five",
-                y: 4
-            },
-            {
-                key: "Six",
-                y: 3
-            },
-            {
-                key: "Seven",
-                y: .5
-            }
-        ];
-  }
-
   function getStackedLocationByFrequencyChartOptions(){
     return {
         chart: {
@@ -171,6 +118,23 @@ angular.module('plunker.services', [])
     return function(d){
       return tickLabels[d];
     }
+  }
+
+  function getTypeSubTypeSunBurstChartOptions(){
+      //type -> sous Type
+      return {
+            chart: {
+                type: 'sunburstChart',
+                color: d3.scale.category20c(),
+                duration: 250,
+                margin : {
+                  top: 50,
+                  right: 10,
+                  bottom: 10,
+                  left: 10
+                },
+            }
+        };
   }
 
   function candlestickBarChartOptions() {
@@ -375,5 +339,35 @@ angular.module('plunker.services', [])
       result.push({x:index, y:0});
     }
     return result
+  }
+
+  function getDataTypeSubTypeSunBurst(){
+    var result = [{
+      "name":"radar",
+      "children":[]
+    }]
+    var subTypeCount = {};
+    carriers.forEach(function(carrier){
+      if(! subTypeCount[carrier.type]){
+        subTypeCount[carrier.type]={}
+      }
+      var subtype = carrier.ssTypeAir || carrier.ssTypeLand || carrier.ssTypeSea
+      if(subTypeCount[carrier.type][subtype]){
+        subTypeCount[carrier.type][subtype].count = subTypeCount[carrier.type][subtype].count +1
+      }else{
+        subTypeCount[carrier.type][subtype] = {count:1}
+      }
+    })
+
+    var result = {"name":"radar", children:[]}
+    for(type in subTypeCount){
+      var child = {"name":type, children:[]}
+      for(subtype in subTypeCount[type]){
+        child.children.push({"name":subtype, "size":subTypeCount[type][subtype].count})
+      }
+      result.children.push(child)
+    }
+
+    return [result];
   }
 });

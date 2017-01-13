@@ -49,10 +49,10 @@ app
 			row: 0,
 			sizeY: 1,
 			sizeX: 1,
-			name: "Pie Chart",
+			name: "Type and Subtype",
 			chart: {
-			  options: DataService.pieChart.options(),
-			  data: DataService.pieChart.data(),
+			  options: DataService.typeAndSubType.options(),
+			  data: DataService.typeAndSubType.data(),
 			  api: {}
 			}
 		},{
