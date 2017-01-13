@@ -2,7 +2,8 @@ var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','lea
 
 app
 .controller('MainCtrl', function($scope, $timeout, DataService) {
-  $scope.gridsterOptions = {
+  var vm = this;
+  vm.gridsterOptions = {
 		margins: [20, 20],
 		columns: 4,
 		mobileModeEnabled: false,
@@ -30,8 +31,8 @@ app
     },
 	};
 
-	$scope.dashboard = {
-		widgets: [		
+	vm.dashboard = {
+		widgets: [
 		{
 			col: 0,
 			row: 0,
@@ -90,9 +91,8 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
-  $scope.datatable = DataService.getRadars();
+  vm.datatable = DataService.getRadars();
 
-  console.log(DataService.getRadarByFrequency())
 });
 app.controller("LeafletMapsController", [ "$scope","leafletData","leafletMarkerEvents", function($scope,leafletData,leafletMarkerEvents) {
 	var markersData = [];

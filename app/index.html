@@ -38,7 +38,7 @@
 
   </head>
 
-  <body ng-controller="MainCtrl">
+  <body ng-controller="MainCtrl as mainCtrl">
 
   <nav class="navbar navbar-inverse">
     <div class="navbar-header">
@@ -52,10 +52,10 @@
     </div>
   </nav>
 
-  <div gridster="gridsterOptions">
+  <div gridster="mainCtrl.gridsterOptions">
 
   	<ul class="with-3d-shadow with-transitions">
-  		<li gridster-item="widget" ng-repeat="widget in dashboard.widgets">
+  		<li gridster-item="widget" ng-repeat="widget in mainCtrl.dashboard.widgets">
   		  <div class="box">
             <div class="box-header">
                 <h3>{{ widget.name }}</h3>
@@ -75,9 +75,10 @@
                 <h3>DataTable</h3>
             </div>
             <div class="box-content-padded">
-              Filter : <input ng-model="filterCriteria">
+              Filter : <input ng-model="mainCtrl.filterCriteria">
+
               <table>
-                  <tr ng-repeat="radar in datatable.radars">
+                  <tr ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">
                     <td>{{radar.nom}}</td>
                     <td>{{radar.dateMaj}}</td>
                   </tr>
