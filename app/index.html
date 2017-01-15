@@ -2,11 +2,14 @@
 <html ng-app="plunker">
 
   <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <title>Gridster + Angular-nvD3</title>
     <script>document.write('<base href="' + document.location + '" />');</script>
     <link rel="stylesheet" href="quotes/nv.d3.min.css"/>
     <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="../bower_components/angular-material/angular-material.min.js"></script>
     <script src="quotes/d3.min.js" charset="utf-8"></script>
     <script src="quotes/nv.d3.min.js"></script>
     <script src="quotes/angular-nvd3.min.js"></script>
@@ -33,6 +36,8 @@
     <script src="bower_components/underscore/underscore.js"></script>
     <link rel="stylesheet" href="../bower_components/leaflet-search/dist/leaflet-search.min.css" />
     <link rel="stylesheet" href="../bower_components/Leaflet.label/dist/leaflet.label.css" />
+    <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
+
 
     
     <script src = "data/Locs.js"></script>
@@ -46,18 +51,23 @@
   </head>
 
   <body ng-controller="MainCtrl as mainCtrl">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+            <h2>
+              <span>MoB EWC</span>
+            </h2>
+            <span flex></span>
+            <md-button class="md-icon-button" aria-label="User">
+              <md-tooltip>User</md-tooltip>
+              <img src="assets/user.png" style="width:24px;height:24px;"/>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="Messages">
+              <md-tooltip>Messages</md-tooltip>
+              <img src="assets/messages.png" style="width:24px;height:24px;"/>
+            </md-button>
+       </div>
+    </md-toolbar>
 
-  <nav class="navbar navbar-inverse">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">MoB EWC</a>
-    </div>
-  </nav>
 
   <div gridster="mainCtrl.gridsterOptions">
 
@@ -76,7 +86,7 @@
             </div>
         </div>
   		</li>
-      <li gridster-item row="2" col="2" size-x="1" size-y="1">
+      <li gridster-item row="1" col="1" size-x="1" size-y="1">
         <div class="box">
           <div class="box-header">
                 <h3>Radars</h3>
@@ -115,7 +125,14 @@
         </div>
       </li>
   	</ul>
+
   </div>
+
+  <footer>
+    <md-toolbar class="md-scroll-shrink">
+    </md-toolbar>
+  </footer>
+
   </body>
 
 </html>

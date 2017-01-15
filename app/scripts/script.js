@@ -1,4 +1,4 @@
-var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive']);
+var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial']);
 
 app
 .controller('MainCtrl', function($scope, $timeout, DataService) {
@@ -57,9 +57,9 @@ app
 			}
 		},{
 			col: 0,
-			row: 2,
+			row: 1,
 			sizeY: 1,
-			sizeX: 2,
+			sizeX: 1,
 			name: "Radars par fréquence",
 			chart: {
 			  options: DataService.stackedFrequencyRange.options(),
