@@ -15,6 +15,12 @@ var getRadars = (function (){
   }
 })();
 
+var getLocs = function(){
+  return _.map(locs, function(item) {
+    return _.pick(item, ['latitude','longitude','nom']);
+  });
+};
+
 angular.module('plunker.services', [])
 .factory('DataService', function() {
 
@@ -32,6 +38,7 @@ angular.module('plunker.services', [])
       data: getDataTypeSubTypeSunBurst
     },
     getRadars : getRadars,
+    getLocs : getLocs,
     getRadarByFrequency : getRadarByFrequency
   };
 

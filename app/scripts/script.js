@@ -93,19 +93,40 @@ app
   }, 200);
   vm.datatable = DataService.getRadars();
 
-});
-app.controller("LeafletMapsController", [ "$scope","leafletData","leafletMarkerEvents", function($scope,leafletData,leafletMarkerEvents) {
-	var markersData = [];
+})
+.controller("LeafletMapsController", function($scope,DataService) {
 
-	angular.extend($scope, {
-	    center: {
+    var addressPointsToMarkers = function(points) {
+      return points.map(function(ap) {
+        return {
+          layer: 'locs',
+	      lat: parseFloat(ap.latitude.replace(',','.')),
+	      lng: parseFloat(ap.longitude.replace(',','.'))
+        };
+      });
+    };
+
+    $scope.markers = addressPointsToMarkers(DataService.getLocs());
+
+    angular.extend($scope, {
+       center: {
 	        lat: 48.4000000,
 	        lng: -4.4833300,
 	        zoom: 5
 	    },
-	    layers: {
-	        baselayers: {
-	            bingAerial: {
+        events: {
+            map: {
+                enable: ['moveend', 'popupopen'],
+                logic: 'emit'
+            },
+            marker: {
+                enable: [],
+                logic: 'emit'
+            }
+        },
+        layers: {
+            baselayers: {
+                bingAerial: {
 	                name: 'Bing Aerial',
 	                type: 'bing',
 	                key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
@@ -129,47 +150,14 @@ app.controller("LeafletMapsController", [ "$scope","leafletData","leafletMarkerE
 	                    type: 'AerialWithLabels'
 	                }
 	            },
-
-	        },
-            overlays: {
-                search: {
-                    name: 'search',
-                    type: 'group',
-                    visible: true,
-                    layerParams: {
-                        showOnSelector: false
-                    }
-                }
             },
-            controls: {},
-            markers: {}
-	    }
-	});
-
-	$scope.events = {
-        markers: {
-            enable: leafletMarkerEvents.getAvailableEvents(),
+            overlays: {
+                locs: {
+                    name: 'Locs',
+                    type: 'markercluster',
+                    visible: true
+                }
+            }
         }
-    };
-
-	   markersData.filter(function(data) {
-	       $scope.markers[data.title] = {
-	           title: data.title,
-	           lat: data.loc[0],
-	           lng: data.loc[1],
-	           layer: 'search',
-	           label: {
-	               message: data.title
-	           }
-	       };
-	   });
-
-	 leafletData.getLayers().then(function(baselayers) {
-	           /*console.log(baselayers.overlays.search);
-	           angular.extend($scope.controls, {
-	               search: {
-	                   layer: baselayers.overlays.search
-	               }
-	           });*/
-	       });
-}]);
+    });
+});
