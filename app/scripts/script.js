@@ -107,7 +107,12 @@ app
         return {
           layer: 'locs',
 	      lat: parseFloat(ap.latitude.replace(',','.')),
-	      lng: parseFloat(ap.longitude.replace(',','.'))
+	      lng: parseFloat(ap.longitude.replace(',','.')),
+	      icon: {
+	      		type: 'awesomeMarker',
+                icon: 'star',
+                markerColor: (ap.hostilite==="Hostile")?'red':((ap.hostilite==="Ami")?'green':'orange')
+            }
         };
       });
     };

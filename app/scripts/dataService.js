@@ -17,7 +17,7 @@ var getRadars = (function (){
 
 var getLocs = function(){
   return _.map(locs, function(item) {
-    return _.pick(item, ['latitude','longitude','nom']);
+    return _.pick(item, ['latitude','longitude','nom','hostilite']);
   });
 };
 
