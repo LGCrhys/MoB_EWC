@@ -9,13 +9,17 @@ ul {
 .box-header {
     height: 30px;
     background-color: #eee;
-    /* padding: 0 30px 0 10px; */
     border-bottom: 1px solid #ccc;
     cursor: move;
     position: absolute;
     top:0;
     left:0;
     width: 100%;
+    font-family: 'Rationale', sans-serif;
+    font-size: 0.5em;
+    color: grey;
+    text-align: center;
+    vertical-align: middle;
 }
 .box-header h3 {
     width: 100%;
@@ -50,6 +54,7 @@ form {
     margin-bottom: 0;
 }
 .gridster {
+    overflow: hidden;
 }
 .gridster-item {
     border: 1px solid #ccc;
@@ -77,4 +82,20 @@ form {
   z-index:2;
   height:20px;
   width:35%;
+}
+
+
+.ewc-card{
+  background-color: transparent;
+  height: 50px;
+  color: white;
+}
+
+.widget-clock.blue-light .digital {
+  text-align: center;
+}
+.widget-clock.blue-light .time {
+  font-family: 'Rationale', sans-serif;
+  font-size: 1.5em;
+  color: white;
 }

@@ -1,8 +1,16 @@
-var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial']);
+var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial','ds.clock']);
+
 
 app
+.config(function($mdThemingProvider) {
+  $mdThemingProvider.theme('default')
+    .primaryPalette('blue');
+})
 .controller('MainCtrl', function($scope, $timeout, DataService) {
   var vm = this;
+
+  $scope.myDate = new Date();
+
   vm.gridsterOptions = {
 		margins: [20, 20],
 		columns: 4,

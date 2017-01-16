@@ -5,7 +5,107 @@
     <meta charset="utf-8" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <title>Gridster + Angular-nvD3</title>
     <script>document.write('<base href="' + document.location + '" />');</script>
-    <link rel="stylesheet" href="quotes/nv.d3.min.css"/>
+  </head>
+
+  <body ng-controller="MainCtrl as mainCtrl">
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+            <span class="md-display-1" style="font-family: 'Rationale', sans-serif;">INTEL Reference</span>
+            <span flex></span>
+            <md-button class="md-fab md-icon-button md-primary" aria-label="User">
+              <md-tooltip>User</md-tooltip>
+              <img src="assets/user.png" style="width:100%;   padding-bottom: 50%;"/>
+            </md-button>
+            <ds-widget-clock show-digital theme="blue-light" digital-format="'hh:mm:ss a'"></ds-widget-clock>
+       </div>
+    </md-toolbar>
+
+  <md-content flex layout-padding>
+    <div gridster="mainCtrl.gridsterOptions">
+
+    	<ul class="with-3d-shadow with-transitions">
+    		<li gridster-item="widget" ng-repeat="widget in mainCtrl.dashboard.widgets">
+    		  <div class="box">
+              <div class="box-header">
+                  <h3>{{ widget.name }}</h3>
+              </div>
+              <div class="box-content">
+                <nvd3 options="widget.chart.options"
+                      data="widget.chart.data"
+                      api="widget.chart.api"
+                      config="config"
+                      events="events"></nvd3>
+              </div>
+          </div>
+    		</li>
+        <li gridster-item row="1" col="1" size-x="1" size-y="1">
+          <div class="box">
+            <div class="box-header">
+                  <h3>Radars</h3>
+              </div>
+              <div class="box-content-padded">
+                Filtrer par nom : <input ng-model="mainCtrl.filterCriteria.nom">
+                <div id="table-wrapper">
+                  <div id="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><span class="text">Nom</span></th>
+                                <th><span class="text">Date mise à jour</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">
+                            <td>{{radar.nom}}</td>
+                            <td>{{radar.dateMaj}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </li>
+        <li gridster-item col="3" row="0" size-x="2" size-y="2">
+          <div class="box">
+            <div class="box-header">
+              <h3>Leaflet Map</h3>
+            </div>
+            <div class="map" ng-controller="LeafletMapsController">
+                <leaflet lf-center="center" controls="controls" layers="layers" markers="markers" width="100%" height="95%"></leaflet>
+            </div>
+          </div>
+        </li>
+    	</ul>
+
+    </div>
+  </md-content>
+
+  <footer >
+    <md-toolbar class="md-scroll-shrink" layout="row">
+      <div style="width:350px;">      
+      <md-card md-theme="dark-blue" class="ewc-card">
+        <md-card-title style="padding:0px;">        
+          <img ng-src="assets/radars.png" style="height:32px;width:32px;margin-right:10px;"></img>
+          <md-card-title-text>
+            <span class="md-headline">Selected Radars</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-actions layout="row" layout-align="end center">
+          <md-button>Validate</md-button>
+        </md-card-actions>
+      </md-card>
+    </div>
+      <md-divider></md-divider>
+      <div flex>
+          <span class="md-headline">Activities</span>
+      </div>
+    </md-toolbar>
+  </footer>
+
+  </body>
+
+  <link rel="stylesheet" href="quotes/nv.d3.min.css"/>
     <script src="../bower_components/angular/angular.min.js"></script>
     <script src="../bower_components/angular-aria/angular-aria.min.js"></script>
     <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
@@ -16,6 +116,8 @@
 
     <link rel="stylesheet" href="../bower_components/angular-gridster/dist/angular-gridster.min.css"/>
     <script src="../bower_components/angular-gridster/dist/angular-gridster.min.js"></script>
+
+    <script src="../bower_components/angular-ui-clock/dist/angular-clock.min.js"></script>
 
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
 
@@ -37,6 +139,8 @@
     <link rel="stylesheet" href="../bower_components/leaflet-search/dist/leaflet-search.min.css" />
     <link rel="stylesheet" href="../bower_components/Leaflet.label/dist/leaflet.label.css" />
     <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
+    <link rel="stylesheet" href="../bower_components/angular-ui-clock/dist/angular-clock.css" />
+    <link href="//fonts.googleapis.com/css?family=Rationale:400,700" rel="stylesheet" type="text/css">
 
 
     
@@ -47,92 +151,5 @@
 
 
     <link rel="stylesheet" href="styles/style.css" />
-
-  </head>
-
-  <body ng-controller="MainCtrl as mainCtrl">
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-            <h2>
-              <span>MoB EWC</span>
-            </h2>
-            <span flex></span>
-            <md-button class="md-icon-button" aria-label="User">
-              <md-tooltip>User</md-tooltip>
-              <img src="assets/user.png" style="width:24px;height:24px;"/>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="Messages">
-              <md-tooltip>Messages</md-tooltip>
-              <img src="assets/messages.png" style="width:24px;height:24px;"/>
-            </md-button>
-       </div>
-    </md-toolbar>
-
-
-  <div gridster="mainCtrl.gridsterOptions">
-
-  	<ul class="with-3d-shadow with-transitions">
-  		<li gridster-item="widget" ng-repeat="widget in mainCtrl.dashboard.widgets">
-  		  <div class="box">
-            <div class="box-header">
-                <h3>{{ widget.name }}</h3>
-            </div>
-            <div class="box-content">
-              <nvd3 options="widget.chart.options"
-                    data="widget.chart.data"
-                    api="widget.chart.api"
-                    config="config"
-                    events="events"></nvd3>
-            </div>
-        </div>
-  		</li>
-      <li gridster-item row="1" col="1" size-x="1" size-y="1">
-        <div class="box">
-          <div class="box-header">
-                <h3>Radars</h3>
-            </div>
-            <div class="box-content-padded">
-              Filtrer par nom : <input ng-model="mainCtrl.filterCriteria.nom">
-              <div id="table-wrapper">
-                <div id="table-scroll">
-                  <table>
-                      <thead>
-                          <tr>
-                              <th><span class="text">Nom</span></th>
-                              <th><span class="text">Date mise à jour</span></th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        <tr ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">
-                                  <td>{{radar.nom}}</td>
-                                  <td>{{radar.dateMaj}}</td>
-                                </tr>
-                      </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-        </div>
-      </li>
-      <li gridster-item col="3" row="0" size-x="2" size-y="2">
-        <div class="box">
-          <div class="box-header">
-            <h3>Leaflet Map</h3>
-          </div>
-          <div class="map" ng-controller="LeafletMapsController">
-              <leaflet lf-center="center" controls="controls" layers="layers" markers="markers" width="100%" height="95%"></leaflet>
-          </div>
-        </div>
-      </li>
-  	</ul>
-
-  </div>
-
-  <footer>
-    <md-toolbar class="md-scroll-shrink">
-    </md-toolbar>
-  </footer>
-
-  </body>
 
 </html>
