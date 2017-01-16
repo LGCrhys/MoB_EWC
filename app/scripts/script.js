@@ -143,6 +143,38 @@ app
 	 
 	});
 
+	var legendControl = L.Control.extend({
+
+		options:{position: 'bottomleft'},
+
+        onAdd: function (map) {
+            var div = L.DomUtil.create('div', 'info legend'),             
+                labels = [];
+
+
+            labels.push('<i class="hostile-legend active" ></i> Hostile');
+            labels.push('<i class="inconnu-legend active" ></i> Inconnu');
+            labels.push('<i class="ami-legend active" ></i> Ami');
+
+            div.innerHTML = labels.join('<br>');
+
+            $('.hostile-legend', div).on('click', $scope.toggleClass);
+            $('.inconnu-legend', div).on('click', $scope.toggleClass);
+            $('.ami-legend', div).on('click', $scope.toggleClass);
+
+            return div;
+        }
+    });
+
+    $scope.toggleClass = function(e){
+    	if(!$(e.target).hasClass('active')){
+    		$(e.target).addClass("active");
+    	}
+    	else{
+    		$(e.target).removeClass("active");
+    	}
+    };
+
     angular.extend($scope, {
        center: {
 	        lat: 48.4000000,
@@ -158,11 +190,6 @@ app
                 enable: [],
                 logic: 'emit'
             }
-        },
-        legend : {
-            position: 'bottomleft',
-            colors: [ 'red', 'orange', 'green'],
-            labels: [ 'Hostile', 'Inconnu', 'Ami']
         },
         layers: {
             baselayers: {
@@ -215,5 +242,6 @@ app
 
     leafletData.getMap().then(function(map) {
     	map.addControl(new customControl());
+    	map.addControl(new legendControl());
     });
 });

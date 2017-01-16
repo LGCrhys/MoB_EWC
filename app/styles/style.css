@@ -91,6 +91,7 @@ form {
   color: white;
 }
 
+/* LEGEND Map */
 .legend {
     font: 14px/16px Arial, Helvetica, sans-serif;
     background: rgba(255,255,255, 0.9);
@@ -107,4 +108,28 @@ form {
     float: left;
     margin-right: 8px;
     opacity: 0.7;
+}
+
+.hostile-legend{
+  border: 1px dotted red;
+  border-radius: 5px;
+}
+.hostile-legend.active{
+  background: red;
+}
+
+.inconnu-legend{
+  border: 1px dotted orange;
+  border-radius: 5px;
+}
+.inconnu-legend.active{
+  background: orange;
+}
+
+.ami-legend{
+  border: 1px dotted green;
+  border-radius: 5px;
+}
+.ami-legend.active{
+  background: green;
 }
