@@ -159,6 +159,11 @@ app
                 logic: 'emit'
             }
         },
+        legend : {
+            position: 'bottomleft',
+            colors: [ 'red', 'orange', 'green'],
+            labels: [ 'Hostile', 'Inconnu', 'Ami']
+        },
         layers: {
             baselayers: {
                 bingAerial: {
