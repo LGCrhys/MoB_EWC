@@ -1,4 +1,4 @@
-var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial','ds.clock']);
+var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial','md.data.table','ds.clock']);
 
 
 app
@@ -8,8 +8,6 @@ app
 })
 .controller('MainCtrl', function($scope, $timeout, DataService) {
   var vm = this;
-
-  $scope.myDate = new Date();
 
   vm.gridsterOptions = {
 		margins: [20, 20],
