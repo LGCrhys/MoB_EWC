@@ -60,6 +60,7 @@ form {
     border: 1px solid #ccc;
     display:block;
     border-radius: 5px;
+    overflow: hidden;
 }
 
 #table-scroll {
