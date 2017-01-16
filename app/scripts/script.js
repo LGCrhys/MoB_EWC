@@ -94,7 +94,7 @@ app
   vm.datatable = DataService.getRadars();
 
 })
-.controller("LeafletMapsController", function($scope,DataService) {
+.controller("LeafletMapsController", function($scope,DataService,leafletData) {
 
     var addressPointsToMarkers = function(points) {
       return points.map(function(ap) {
@@ -107,6 +107,30 @@ app
     };
 
     $scope.markers = addressPointsToMarkers(DataService.getLocs());
+	
+	
+	var customControl = L.Control.extend({
+	 
+	  options: {
+	    position: 'topleft' 
+	  },
+	 
+	  onAdd: function (map) {
+	  	 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
+
+	    container.style.backgroundColor = 'white';     
+	    container.style.backgroundImage = "url('assets/refresh.png')";
+	    container.style.backgroundSize = "25px 25px";
+	    container.style.width = '25px';
+	    container.style.height = '25px';
+
+	    container.onclick = function(){
+	      //TODO 
+	    }
+	    return container
+	  },
+	 
+	});
 
     angular.extend($scope, {
        center: {
@@ -159,5 +183,21 @@ app
                 }
             }
         }
+    });
+
+    leafletData.getLayers().then(function(layers) {
+        $scope.markerClusterGrp = layers.overlays.locs;
+        var clusters            = $scope.markerClusterGrp.getLayers();
+        $scope.markerClusterGrp.on('clusterclick', function (a) {
+            var clusterObjects = a.layer.getAllChildMarkers();
+            //TODO
+        });
+        $scope.markerClusterGrp.on('click', function(a){
+        	//TODO
+        })
+    });
+
+    leafletData.getMap().then(function(map) {
+    	map.addControl(new customControl());
     });
 });
