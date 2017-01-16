@@ -110,26 +110,26 @@ form {
     opacity: 0.7;
 }
 
-.hostile-legend{
+.hostile{
   border: 1px dotted red;
   border-radius: 5px;
 }
-.hostile-legend.active{
+.hostile.active{
   background: red;
 }
 
-.inconnu-legend{
+.inconnu{
   border: 1px dotted orange;
   border-radius: 5px;
 }
-.inconnu-legend.active{
+.inconnu.active{
   background: orange;
 }
 
-.ami-legend{
+.ami{
   border: 1px dotted green;
   border-radius: 5px;
 }
-.ami-legend.active{
+.ami.active{
   background: green;
 }

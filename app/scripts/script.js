@@ -102,8 +102,15 @@ app
 })
 .controller("LeafletMapsController", function($scope,DataService,leafletData) {
 
+    $scope.hostile = true;
+    $scope.inconnu = true;
+    $scope.ami = true;
+
     var addressPointsToMarkers = function(points) {
       return points.map(function(ap) {
+        if(ap.hostilite && !$scope[ap.hostilite.toLowerCase()]){
+          return;
+        }
         return {
           layer: 'locs',
 	      lat: parseFloat(ap.latitude.replace(',','.')),
@@ -152,15 +159,15 @@ app
                 labels = [];
 
 
-            labels.push('<i class="hostile-legend active" ></i> Hostile');
-            labels.push('<i class="inconnu-legend active" ></i> Inconnu');
-            labels.push('<i class="ami-legend active" ></i> Ami');
+            labels.push('<i class="hostile active" ></i> Hostile');
+            labels.push('<i class="inconnu active" ></i> Inconnu');
+            labels.push('<i class="ami active" ></i> Ami');
 
             div.innerHTML = labels.join('<br>');
 
-            $('.hostile-legend', div).on('click', $scope.toggleClass);
-            $('.inconnu-legend', div).on('click', $scope.toggleClass);
-            $('.ami-legend', div).on('click', $scope.toggleClass);
+            $('.hostile', div).on('click', $scope.toggleClass);
+            $('.inconnu', div).on('click', $scope.toggleClass);
+            $('.ami', div).on('click', $scope.toggleClass);
 
             return div;
         }
@@ -168,11 +175,14 @@ app
 
     $scope.toggleClass = function(e){
     	if(!$(e.target).hasClass('active')){
+        $scope[e.target.className] = true;
     		$(e.target).addClass("active");
     	}
     	else{
     		$(e.target).removeClass("active");
+        $scope[e.target.className] = false;
     	}
+      $scope.markers = addressPointsToMarkers(DataService.getLocs());
     };
 
     angular.extend($scope, {
