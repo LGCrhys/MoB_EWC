@@ -4,6 +4,14 @@ var getOriginalRadar = (function (){
     radar.origin = origin;
     return radar;
   }
+
+  _.each(carriers, function(carrier){
+    _.each(carrier.Radars, function(radar){
+      radar.type = carrier.type;
+      radar.subType = carrier.ssTypeSea || carrier.ssTypeLand || carrier.ssTypeAir;
+    })
+  })
+
   var radarsLocs =_.map(_.flatten(_.pluck(locs, "Radars")), function(radar){return setOrigin(radar, 'Loc') });
   var radarsCarriers = _.map(_.flatten(_.pluck(carriers, "Radars")), function(radar){return setOrigin(radar, 'Carrier')});
   var radars = radarsLocs.concat(radarsCarriers);
@@ -16,13 +24,39 @@ var getOriginalRadar = (function (){
   };
 })();
 
-var filter = {
-  frequencyRange : "",
-  type : "",
-  subType:""
+var filterCriteria ={
+    frequence:"",
+    type:"",
+    subType:"",
+    name:""
 }
 
-function filterRadarsList(){
+function getFilteredRadarsList(){
+  var originalRadars = getOriginalRadar();
+  var result = {
+    radars:originalRadars.radars.slice(),
+    radarsCarriers:originalRadars.radarsCarriers.slice(),
+    radarsLocs:originalRadars.radarsLocs.slice()
+  }
+  if(filterCriteria.type){
+    result.radars = _.filter(result.radars, function(radar){return radar.type===filterCriteria.type});
+    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
+    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.type===filterCriteria.type});
+  }
+  if(filterCriteria.subType){
+    result.radars = _.filter(result.radars, function(radar){return radar.ssTypeAir===filterCriteria.subType || radar.ssTypeLand===filterCriteria.subType ||radar.ssTypeSea===filterCriteria.subType});
+    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.ssTypeAir===filterCriteria.subType || radar.ssTypeLand===filterCriteria.subType ||radar.ssTypeSea===filterCriteria.subType});
+    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.ssTypeAir===filterCriteria.subType || radar.ssTypeLand===filterCriteria.subType ||radar.ssTypeSea===filterCriteria.subType});
+  }
+  if(filterCriteria.name){
+    result.radars = _.filter(result.radars, function(radar){return radar.nom === filterCriteria.name})
+    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.nom === filterCriteria.name})
+    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.nom === filterCriteria.name})
+  }
+  return result;
+}
+
+function filterByFrequency(){
 
 }
 
@@ -33,7 +67,7 @@ var getLocs = function(){
 };
 
 angular.module('plunker.services', [])
-.factory('DataService', function() {
+.factory('DataService', function($rootScope) {
 
   return {
     frequencyRange: {
@@ -48,9 +82,8 @@ angular.module('plunker.services', [])
       options: getTypeSubTypeSunBurstChartOptions,
       data: getDataTypeSubTypeSunBurst
     },
-    getOriginalRadar : getOriginalRadar,
     getLocs : getLocs,
-    getRadarByFrequency : getRadarByFrequency
+    getFilteredRadarsList: getFilteredRadarsList
   };
 
 
@@ -66,7 +99,11 @@ angular.module('plunker.services', [])
                 },
                 discretebar:{
                   dispatch: {
-                      elementClick: function(e) {console.log("elementClick : %o", e)}   //e.data.label
+                      elementClick: function(e) {
+                        console.log("frequency chart click : %o", e)
+                        filterCriteria.frequence=e.data.label;
+                        $rootScope.$broadcast("filterChange");
+                    }   //e.data.label
                   }
                 },
                 x: function(d){return d.label;},
@@ -153,7 +190,23 @@ angular.module('plunker.services', [])
                 },
                 sunburst:{
                   dispatch: {
-                      ChartClick: function(e) {console.log("ChartClick : %o", e.pos.target.__data__)}  //name et depth pour le graph.
+                      chartClick: function(e) {
+                        var clickedElement = e.pos.target.__data__;
+                        console.log("sunburst click : %o", clickedElement);
+
+                        if (clickedElement.depth===0){
+                          filterCriteria.type="";
+                          filterCriteria.subType="";
+                        }
+                        if(clickedElement.depth===1)
+                          filterCriteria.type=clickedElement.name;
+                          filterCriteria.subType="";
+                        if(clickedElement.depth===2){
+                          filterCriteria.subType=clickedElement.name;
+                        }
+
+                        $rootScope.$broadcast("filterChange");
+                    }  //name et depth pour le graph.
                   }
                 }
             }
@@ -162,7 +215,7 @@ angular.module('plunker.services', [])
 
 
   function getRadarByFrequency(){
-    var modes =_.flatten(_.map(getOriginalRadar().radars, function(radar){return radar.modes}));
+    var modes =_.flatten(_.map(getFilteredRadarsList().radars, function(radar){return radar.modes}));
     var modeByFrequency  = [
                   {label:"3000-4000", value:0,},
                   {label:"4001-5000", value:0,},
@@ -206,12 +259,12 @@ angular.module('plunker.services', [])
     return [{
           key: 'Loc',
           color: '#bcbd22',
-          values: countRadarsByFrequency(getOriginalRadar().radarsLocs, locsArray)
+          values: countRadarsByFrequency(getFilteredRadarsList().radarsLocs, locsArray)
           },
           {
             key: 'Carrier',
             color: '#1f77b4',
-            values: countRadarsByFrequency(getOriginalRadar().radarsCarriers, carriersArray)
+            values: countRadarsByFrequency(getFilteredRadarsList().radarsCarriers, carriersArray)
           }
         ];
   };

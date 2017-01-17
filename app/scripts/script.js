@@ -75,6 +75,23 @@ app
 		}]
 	};
 
+ // vm.dashboard.widgets[1].chart.options.chart.sunburst = {
+ //                 dispatch: {
+ //                     ChartClick: function(e) {
+ //                       console.log("ChartClick : %o", e.pos.target.__data__)}  //name et depth pour le graph.
+ //                 }
+ //               };
+
+
+  $scope.$on("filterChange", function(){
+    updateGraph();
+  })
+  function updateGraph(){
+    vm.dashboard.widgets[0].chart.data= DataService.frequencyRange.data();
+    vm.dashboard.widgets[1].chart.data= DataService.frequencyRange.data();
+    vm.dashboard.widgets[2].chart.data= DataService.stackedFrequencyRange.data();
+  }
+
   // We want to manually handle `window.resize` event in each directive.
   // So that we emulate `resize` event using $broadcast method and internally subscribe to this event in each directive
   // Define event handler
@@ -97,7 +114,7 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
-  vm.datatable = DataService.getOriginalRadar();
+  vm.datatable = DataService.getFilteredRadarsList();
 
 })
 .controller("LeafletMapsController", function($scope,DataService,leafletData) {
