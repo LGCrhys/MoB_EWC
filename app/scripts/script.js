@@ -1,5 +1,5 @@
+"use strict";
 var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial','md.data.table','ds.clock']);
-
 
 app
 .config(function($mdThemingProvider) {
@@ -34,7 +34,7 @@ app
          if (widget.chart.api) widget.chart.api.update();
        },400)
      }
-    },
+    }
 	};
 
 	vm.dashboard = {
@@ -59,7 +59,7 @@ app
 			chart: {
 			  options: DataService.typeAndSubType.options(),
 			  data: DataService.typeAndSubType.data(),
-			  api: {}
+			  api: {},
 			}
 		},{
 			col: 0,
@@ -81,7 +81,7 @@ app
   $scope.events = {
     resize: function(e, scope){
       $timeout(function(){
-        scope.api.update()
+        scope.api.update();
       },200)
     }
   };
@@ -97,7 +97,7 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
-  vm.datatable = DataService.getRadars();
+  vm.datatable = DataService.getOriginalRadar();
 
 })
 .controller("LeafletMapsController", function($scope,DataService,leafletData) {
@@ -125,29 +125,29 @@ app
     };
 
     $scope.markers = addressPointsToMarkers(DataService.getLocs());
-	
-	
+
+
 	var customControl = L.Control.extend({
-	 
+
 	  options: {
-	    position: 'topleft' 
+	    position: 'topleft'
 	  },
-	 
+
 	  onAdd: function (map) {
 	  	 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
 
-	    container.style.backgroundColor = 'white';     
+	    container.style.backgroundColor = 'white';
 	    container.style.backgroundImage = "url('assets/refresh.png')";
 	    container.style.backgroundSize = "25px 25px";
 	    container.style.width = '25px';
 	    container.style.height = '25px';
 
 	    container.onclick = function(){
-	      //TODO 
+	      //TODO
 	    }
 	    return container
 	  },
-	 
+
 	});
 
 	var legendControl = L.Control.extend({
@@ -155,7 +155,7 @@ app
 		options:{position: 'bottomleft'},
 
         onAdd: function (map) {
-            var div = L.DomUtil.create('div', 'info legend'),             
+            var div = L.DomUtil.create('div', 'info legend'),
                 labels = [];
 
 

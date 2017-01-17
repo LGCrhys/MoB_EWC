@@ -1,7 +1,8 @@
-var getRadars = (function (){
+"use strict";
+var getOriginalRadar = (function (){
   function setOrigin(radar, origin){
     radar.origin = origin;
-    return radar
+    return radar;
   }
   var radarsLocs =_.map(_.flatten(_.pluck(locs, "Radars")), function(radar){return setOrigin(radar, 'Loc') });
   var radarsCarriers = _.map(_.flatten(_.pluck(carriers, "Radars")), function(radar){return setOrigin(radar, 'Carrier')});
@@ -12,8 +13,18 @@ var getRadars = (function (){
       radarsCarriers:radarsCarriers,
       radarsLocs:radarsLocs
     };
-  }
+  };
 })();
+
+var filter = {
+  frequencyRange : "",
+  type : "",
+  subType:""
+}
+
+function filterRadarsList(){
+
+}
 
 var getLocs = function(){
   return _.map(locs, function(item) {
@@ -37,7 +48,7 @@ angular.module('plunker.services', [])
       options: getTypeSubTypeSunBurstChartOptions,
       data: getDataTypeSubTypeSunBurst
     },
-    getRadars : getRadars,
+    getOriginalRadar : getOriginalRadar,
     getLocs : getLocs,
     getRadarByFrequency : getRadarByFrequency
   };
@@ -52,6 +63,11 @@ angular.module('plunker.services', [])
                     right: 20,
                     bottom: 30,
                     left: 55
+                },
+                discretebar:{
+                  dispatch: {
+                      elementClick: function(e) {console.log("elementClick : %o", e)}   //e.data.label
+                  }
                 },
                 x: function(d){return d.label;},
                 y: function(d){return d.value;},
@@ -69,8 +85,8 @@ angular.module('plunker.services', [])
                     axisLabelDistance: -10
                 }
             }
-        }
-	}
+        };
+	};
 	function frequencyRangeChartData() {
 	  return [
             {
@@ -78,7 +94,7 @@ angular.module('plunker.services', [])
                 values: getRadarByFrequency()
             }
         ];
-	}
+	};
 
   function getStackedLocationByFrequencyChartOptions(){
     return {
@@ -96,7 +112,7 @@ angular.module('plunker.services', [])
             xAxis: {
                 axisLabel: 'Plage de fréquence',
                 showMaxMin: false,
-                  tickFormat: getFrequencyRangeTickFunction()
+                tickFormat: getFrequencyRangeTickFunction()
             },
             yAxis: {
                 axisLabel: 'count',
@@ -104,8 +120,8 @@ angular.module('plunker.services', [])
                 tickFormat: function(d) {return d;}
             }
         }
-    }
-  }
+    };
+  };
   function getFrequencyRangeTickFunction(){
     var tickLabels=[
                   "3000-4000",
@@ -119,8 +135,8 @@ angular.module('plunker.services', [])
 
     return function(d){
       return tickLabels[d];
-    }
-  }
+    };
+  };
 
   function getTypeSubTypeSunBurstChartOptions(){
       //type -> sous Type
@@ -135,13 +151,18 @@ angular.module('plunker.services', [])
                   bottom: 10,
                   left: 10
                 },
+                sunburst:{
+                  dispatch: {
+                      ChartClick: function(e) {console.log("ChartClick : %o", e.pos.target.__data__)}  //name et depth pour le graph.
+                  }
+                }
             }
         };
-  }
+  };
 
 
   function getRadarByFrequency(){
-    var modes =_.flatten(_.map(getRadars().radars, function(radar){return radar.modes}))
+    var modes =_.flatten(_.map(getOriginalRadar().radars, function(radar){return radar.modes}));
     var modeByFrequency  = [
                   {label:"3000-4000", value:0,},
                   {label:"4001-5000", value:0,},
@@ -175,9 +196,9 @@ angular.module('plunker.services', [])
         memo[6].value = memo[6].value +1;
       }
       return memo;
-    }
+    };
     return  _.reduce(modes, reduction, modeByFrequency);
-  }
+  };
 
   function getDataStackedRadarFrequencies(){
     var locsArray = prepareArrayForCountByFrequency();
@@ -185,18 +206,18 @@ angular.module('plunker.services', [])
     return [{
           key: 'Loc',
           color: '#bcbd22',
-          values: countRadarsByFrequency(getRadars().radarsLocs, locsArray)
+          values: countRadarsByFrequency(getOriginalRadar().radarsLocs, locsArray)
           },
           {
             key: 'Carrier',
             color: '#1f77b4',
-            values: countRadarsByFrequency(getRadars().radarsCarriers, carriersArray)
+            values: countRadarsByFrequency(getOriginalRadar().radarsCarriers, carriersArray)
           }
         ];
-  }
+  };
 
   function countRadarsByFrequency(radars, resultArray){
-    var modes =_.flatten(_.map(radars, function(radar){return radar.modes}))
+    var modes =_.flatten(_.map(radars, function(radar){return radar.modes}));
     function reduction(memo, mode){
       var frequence = parseFloat(mode.sousMode.frequence);
       if(frequence>=3000 && frequence<=4000){
@@ -223,7 +244,7 @@ angular.module('plunker.services', [])
       return memo;
     }
     return  _.reduce(modes, reduction, resultArray);
-  }
+  };
 
 
   function prepareArrayForCountByFrequency(){
@@ -231,34 +252,34 @@ angular.module('plunker.services', [])
     for (var index=0; index<7; index++){
       result.push({x:index, y:0});
     }
-    return result
+    return result;
   }
 
   function getDataTypeSubTypeSunBurst(){
     var result = [{
       "name":"radar",
       "children":[]
-    }]
+    }];
     var subTypeCount = {};
     carriers.forEach(function(carrier){
       if(! subTypeCount[carrier.type]){
-        subTypeCount[carrier.type]={}
+        subTypeCount[carrier.type]={};
       }
-      var subtype = carrier.ssTypeAir || carrier.ssTypeLand || carrier.ssTypeSea
+      var subtype = carrier.ssTypeAir || carrier.ssTypeLand || carrier.ssTypeSea;
       if(subTypeCount[carrier.type][subtype]){
-        subTypeCount[carrier.type][subtype].count = subTypeCount[carrier.type][subtype].count +1
+        subTypeCount[carrier.type][subtype].count = subTypeCount[carrier.type][subtype].count +1;
       }else{
-        subTypeCount[carrier.type][subtype] = {count:1}
+        subTypeCount[carrier.type][subtype] = {count:1};
       }
-    })
+    });
 
-    var result = {"name":"radar", children:[]}
-    for(type in subTypeCount){
-      var child = {"name":type, children:[]}
-      for(subtype in subTypeCount[type]){
-        child.children.push({"name":subtype, "size":subTypeCount[type][subtype].count})
+    var result = {"name":"radar", children:[]};
+    for(var type in subTypeCount){
+      var child = {"name":type, children:[]};
+      for(var subtype in subTypeCount[type]){
+        child.children.push({"name":subtype, "size":subTypeCount[type][subtype].count});
       }
-      result.children.push(child)
+      result.children.push(child);
     }
 
     return [result];
