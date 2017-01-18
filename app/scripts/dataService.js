@@ -62,11 +62,50 @@ function getFilteredRadarsList(){
     result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.nom === filterCriteria.name})
     result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.nom === filterCriteria.name})
   }
+  if (filterCriteria.frequence){
+    var range;
+    switch(filterCriteria.frequence){
+      case "3000-4000":
+        range=[3000, 4000];
+        break;
+      case "4001-5000":
+        range = [4001, 5000];
+        break;
+      case "5001-6000":
+        range = [5001, 6000];
+        break;
+      case "6001-7000":
+        range = [6001, 7000];
+        break;
+      case "7001-8000":
+        range = [7001, 8000];
+        break;
+      case "8001-9000":
+        range = [8001, 9000];
+        break;
+      case "9001-10000":
+        range = [9001, 10000];
+        break;
+    }
+    result.radars = filterByFrequencies(result.radars, range);
+    result.radarsCarriers=filterByFrequencies(result.radarsCarriers, range);
+    result.radarsLocs=filterByFrequencies(result.radarsLocs, range);
+  }
   return result;
 }
 
-function filterByFrequency(){
-
+function filterByFrequencies(radars, frequencyRange){
+  var result = [];
+  _.each(radars, function(radar){
+    var modesInRange = _.filter(radar.modes, function(mode){
+      var radarFrequence= parseFloat(mode.sousMode.frequence);
+      return radarFrequence>=frequencyRange[0] && radarFrequence<=frequencyRange[1];
+    })
+    if(modesInRange.length){
+      result.push(radar);
+    }
+  })
+  return result;
 }
 
 var getFilteredLocs = function(){
@@ -129,7 +168,6 @@ angular.module('plunker.services', [])
                 discretebar:{
                   dispatch: {
                       elementClick: function(e) {
-                        console.log("frequency chart click : %o", e)
                         filterCriteria.frequence=e.data.label;
                         $rootScope.$broadcast("filterChange");
                     }   //e.data.label
@@ -205,7 +243,6 @@ angular.module('plunker.services', [])
   };
 
   function getTypeSubTypeSunBurstChartOptions(){
-      //type -> sous Type
       return {
             chart: {
                 type: 'sunburstChart',
@@ -221,7 +258,6 @@ angular.module('plunker.services', [])
                   dispatch: {
                       chartClick: function(e) {
                         var clickedElement = e.pos.target.__data__;
-                        console.log("sunburst click : %o", clickedElement);
 
                         if (clickedElement.depth===0){
                           filterCriteria.type="";
@@ -235,7 +271,7 @@ angular.module('plunker.services', [])
                         }
 
                         $rootScope.$broadcast("filterChange");
-                    }  //name et depth pour le graph.
+                    }
                   }
                 }
             }
@@ -254,31 +290,7 @@ angular.module('plunker.services', [])
                   {label:"8001-9000", value:0,},
                   {label:"9001-10000", value:0},
                 ];
-    function reduction(memo, mode){
-      var frequence = parseFloat(mode.sousMode.frequence);
-      if(frequence>=3000 && frequence<=4000){
-        memo[0].value = memo[0].value +1;
-      }
-      if(frequence>=4001 && frequence<=5000){
-        memo[1].value = memo[1].value +1;
-      }
-      if(frequence>=5001 && frequence<=6000){
-        memo[2].value = memo[2].value +1;
-      }
-      if(frequence>=6001 && frequence<=7000){
-        memo[3].value = memo[3].value +1;
-      }
-      if(frequence>=7001 && frequence<=8000){
-        memo[4].value = memo[4].value +1;
-      }
-      if(frequence>=8001 && frequence<=9000){
-        memo[5].value = memo[5].value +1;
-      }
-      if(frequence>=9001 && frequence<=10000){
-        memo[6].value = memo[6].value +1;
-      }
-      return memo;
-    };
+    var reduction = getReductionByFrequencyFunctionForProperty("value");
     return  _.reduce(modes, reduction, modeByFrequency);
   };
 
@@ -300,34 +312,37 @@ angular.module('plunker.services', [])
 
   function countRadarsByFrequency(radars, resultArray){
     var modes =_.flatten(_.map(radars, function(radar){return radar.modes}));
-    function reduction(memo, mode){
-      var frequence = parseFloat(mode.sousMode.frequence);
-      if(frequence>=3000 && frequence<=4000){
-        memo[0].y = memo[0].y +1;
-      }
-      if(frequence>=4001 && frequence<=5000){
-        memo[1].y = memo[1].y +1;
-      }
-      if(frequence>=5001 && frequence<=6000){
-        memo[2].y = memo[2].y +1;
-      }
-      if(frequence>=6001 && frequence<=7000){
-        memo[3].y = memo[3].y +1;
-      }
-      if(frequence>=7001 && frequence<=8000){
-        memo[4].y = memo[4].y +1;
-      }
-      if(frequence>=8001 && frequence<=9000){
-        memo[5].y = memo[5].y +1;
-      }
-      if(frequence>=9001 && frequence<=10000){
-        memo[6].y = memo[6].y +1;
-      }
-      return memo;
-    }
+    var reduction = getReductionByFrequencyFunctionForProperty("y");
     return  _.reduce(modes, reduction, resultArray);
   };
 
+  function getReductionByFrequencyFunctionForProperty(property){
+    return function reduction(memo, mode){
+      var frequence = parseFloat(mode.sousMode.frequence);
+      if(frequence>=3000 && frequence<=4000){
+        memo[0][property] = memo[0][property] +1;
+      }
+      if(frequence>=4001 && frequence<=5000){
+        memo[1][property] = memo[1][property] +1;
+      }
+      if(frequence>=5001 && frequence<=6000){
+        memo[2][property] = memo[2][property] +1;
+      }
+      if(frequence>=6001 && frequence<=7000){
+        memo[3][property] = memo[3][property] +1;
+      }
+      if(frequence>=7001 && frequence<=8000){
+        memo[4][property] = memo[4][property] +1;
+      }
+      if(frequence>=8001 && frequence<=9000){
+        memo[5][property] = memo[5][property] +1;
+      }
+      if(frequence>=9001 && frequence<=10000){
+        memo[6][property] = memo[6][property] +1;
+      }
+      return memo;
+    }
+  }
 
   function prepareArrayForCountByFrequency(){
     var result =[];
@@ -342,16 +357,16 @@ angular.module('plunker.services', [])
       "name":"radar",
       "children":[]
     }];
+    var filteredRadars = getFilteredRadarsList().radarsCarriers;
     var subTypeCount = {};
-    carriers.forEach(function(carrier){
-      if(! subTypeCount[carrier.type]){
-        subTypeCount[carrier.type]={};
+    filteredRadars.forEach(function(radar){
+      if(! subTypeCount[radar.type]){
+        subTypeCount[radar.type]={};
       }
-      var subtype = carrier.ssTypeAir || carrier.ssTypeLand || carrier.ssTypeSea;
-      if(subTypeCount[carrier.type][subtype]){
-        subTypeCount[carrier.type][subtype].count = subTypeCount[carrier.type][subtype].count +1;
+      if(subTypeCount[radar.type][radar.subType]){
+        subTypeCount[radar.type][radar.subType].count = subTypeCount[radar.type][radar.subType].count +1;
       }else{
-        subTypeCount[carrier.type][subtype] = {count:1};
+        subTypeCount[radar.type][radar.subType] = {count:1};
       }
     });
 

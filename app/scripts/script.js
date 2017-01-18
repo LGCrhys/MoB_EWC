@@ -75,22 +75,16 @@ app
 		}]
 	};
 
- // vm.dashboard.widgets[1].chart.options.chart.sunburst = {
- //                 dispatch: {
- //                     ChartClick: function(e) {
- //                       console.log("ChartClick : %o", e.pos.target.__data__)}  //name et depth pour le graph.
- //                 }
- //               };
-
-
   $scope.$on("filterChange", function(){
     updateGraph();
     vm.datatable = DataService.getFilteredRadarsList();
   })
   function updateGraph(){
-    vm.dashboard.widgets[0].chart.data= DataService.frequencyRange.data();
-    vm.dashboard.widgets[1].chart.data= DataService.frequencyRange.data();
-    vm.dashboard.widgets[2].chart.data= DataService.stackedFrequencyRange.data();
+    //Did not understand, watch on sunburst did not work use API.
+    vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
+    vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
+    vm.dashboard.widgets[2].chart.api.updateWithData(DataService.stackedFrequencyRange.data());
+
   }
 
   // We want to manually handle `window.resize` event in each directive.
