@@ -125,21 +125,23 @@ app
     $scope.ami = true;
 
     var addressPointsToMarkers = function(points) {
-      return points.map(function(ap) {
+      var markers = [];
+      points.map(function(ap) {
         if(ap.hostilite && !$scope[ap.hostilite.toLowerCase()]){
-          return;
+          return false;
         }
-        return {
+        markers.push({
           layer: 'locs',
-	      lat: parseFloat(ap.latitude.replace(',','.')),
-	      lng: parseFloat(ap.longitude.replace(',','.')),
-	      icon: {
-	      		type: 'awesomeMarker',
-                icon: 'star',
-                markerColor: (ap.hostilite==="Hostile")?'red':((ap.hostilite==="Ami")?'green':'orange')
-            }
-        };
+  	      lat: parseFloat(ap.latitude.replace(',','.')),
+  	      lng: parseFloat(ap.longitude.replace(',','.')),
+  	      icon: {
+  	      		type: 'awesomeMarker',
+                  icon: 'star',
+                  markerColor: (ap.hostilite==="Hostile")?'red':((ap.hostilite==="Ami")?'green':'orange')
+              }
+        });
       });
+      return markers;
     };
 
     $scope.markers = addressPointsToMarkers(DataService.getLocs());
