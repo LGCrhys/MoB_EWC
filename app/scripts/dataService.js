@@ -5,6 +5,14 @@ var getOriginalRadar = (function (){
     return radar;
   }
 
+  _.each(locs, function(loc){
+    _.each(loc.Radars, function(radar){
+      radar.latitude = loc.latitude;
+      radar.longitude = loc.longitude;
+      radar.hostilite = loc.hostilite;
+    })
+  })
+
   _.each(carriers, function(carrier){
     _.each(carrier.Radars, function(radar){
       radar.type = carrier.type;
@@ -23,6 +31,7 @@ var getOriginalRadar = (function (){
     };
   };
 })();
+
 
 var filterCriteria ={
     frequence:"",
@@ -60,9 +69,29 @@ function filterByFrequency(){
 
 }
 
-var getLocs = function(){
-  return _.map(locs, function(item) {
-    return _.pick(item, ['latitude','longitude','nom','hostilite']);
+var getFilteredLocs = function(){
+  //var tmp = getOriginalRadar().radarsLocs.slice();
+  /*var filteredLocs = [];
+  _.each(locs, function(loc,i){
+    if(filterCriteria.type){
+      if(!(_.filter(loc.Radars, function(radar){        
+        radar.type = carrier.type;
+        radar.subType = carrier.ssTypeSea || carrier.ssTypeLand || carrier.ssTypeAir;
+        return radar.type===filterCriteria.type
+      }).length)) return false;
+    }
+    if(filterCriteria.subType){
+      if(!(_.filter(loc.Radars, function(radar){return radar.subtype===filterCriteria.subType}).length)) return false;
+    }
+    if(filterCriteria.name){
+      if(!(_.filter(loc.Radars, function(radar){return radar.nom===filterCriteria.name}).length)) return false;
+    }
+    filteredLocs.push(loc);
+  });
+  return filteredLocs;*/
+  var filteredLocs = getOriginalRadar().radarsLocs.slice();
+  return _.uniq(filteredLocs,function(item){
+    return item.latitude && item.longitude;
   });
 };
 
@@ -82,7 +111,7 @@ angular.module('plunker.services', [])
       options: getTypeSubTypeSunBurstChartOptions,
       data: getDataTypeSubTypeSunBurst
     },
-    getLocs : getLocs,
+    getFilteredLocs : getFilteredLocs,
     getFilteredRadarsList: getFilteredRadarsList
   };
 

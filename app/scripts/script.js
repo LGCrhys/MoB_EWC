@@ -144,7 +144,7 @@ app
       return markers;
     };
 
-    $scope.markers = addressPointsToMarkers(DataService.getLocs());
+    $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs());
 
 
 	var customControl = L.Control.extend({
@@ -202,7 +202,7 @@ app
     		$(e.target).removeClass("active");
         $scope[e.target.className] = false;
     	}
-      $scope.markers = addressPointsToMarkers(DataService.getLocs());
+      $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs());
     };
 
     angular.extend($scope, {
@@ -274,4 +274,8 @@ app
     	map.addControl(new customControl());
     	map.addControl(new legendControl());
     });
+
+    $scope.$on("filterChange", function(){
+      $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs());
+    })
 });
