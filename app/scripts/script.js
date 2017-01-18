@@ -37,6 +37,19 @@ app
     }
 	};
 
+  vm.deleteCriteria = function(criteria){
+    console.log("criteria " + criteria)
+    if(criteria ==='frequence')
+      filterCriteria.frequence = "";
+    if(criteria === 'type')
+      filterCriteria.type = "" ;
+    if(criteria === 'subType')
+      filterCriteria.subType = "";
+
+    updateGraph()
+  }
+
+  vm.filterCriteria = filterCriteria;
 	vm.dashboard = {
 		widgets: [
 		{

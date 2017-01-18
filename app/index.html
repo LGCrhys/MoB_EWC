@@ -20,7 +20,19 @@
        </div>
     </md-toolbar>
 
+
   <md-content flex layout-padding>
+    <div>
+      <button ng-click="mainCtrl.deleteCriteria('frequence')" ng-if="mainCtrl.filterCriteria.frequence">
+        <span>Place de fréquences : {{mainCtrl.filterCriteria.frequence}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
+      </button>
+      <button ng-click="mainCtrl.deleteCriteria('type')" ng-if="mainCtrl.filterCriteria.type" >
+        <span>Type : {{mainCtrl.filterCriteria.type}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
+      </button>
+      <button ng-click="mainCtrl.deleteCriteria('subType')" ng-if="mainCtrl.filterCriteria.subType">
+        <span>Sous type : {{mainCtrl.filterCriteria.subType}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
+      </button>
+    </div>
     <div gridster="mainCtrl.gridsterOptions">
 
     	<ul class="with-3d-shadow with-transitions">
@@ -88,9 +100,9 @@
 
   <!--<footer >
     <md-toolbar class="md-scroll-shrink" layout="row">
-      <div style="width:350px;">      
+      <div style="width:350px;">
       <md-card md-theme="dark-blue" class="ewc-card">
-        <md-card-title style="padding:0px;">        
+        <md-card-title style="padding:0px;">
           <img ng-src="assets/radars.png" style="height:32px;width:32px;margin-right:10px;"></img>
           <md-card-title-text>
             <span class="md-headline">Selected Radars</span>
@@ -147,13 +159,14 @@
     <link rel="stylesheet" href="../bower_components/angular-material/angular-material.css" />
     <link rel="stylesheet" href="../bower_components/angular-ui-clock/dist/angular-clock.css" />
     <link rel="stylesheet" href="../bower_components/Leaflet.awesome-markers/dist/leaflet.awesome-markers.css">
+    <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.min.css">
 
     <!-- style sheet -->
     <link href="../bower_components/angular-material-data-table/dist/md-data-table.min.css" rel="stylesheet" type="text/css"/>
     <!-- module -->
     <script type="text/javascript" src="../bower_components/angular-material-data-table/dist/md-data-table.min.js"></script>
 
-    <link href="//fonts.googleapis.com/css?family=Rationale:400,700" rel="stylesheet" type="text/css">    
+    <link href="//fonts.googleapis.com/css?family=Rationale:400,700" rel="stylesheet" type="text/css">
     <script src = "data/Locs.js"></script>
     <script src = "data/carriers.js"></script>
     <script src="scripts/script.js"></script>
