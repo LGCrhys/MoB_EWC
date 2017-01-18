@@ -44,9 +44,9 @@ function getFilteredRadarsList(){
     result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.type===filterCriteria.type});
   }
   if(filterCriteria.subType){
-    result.radars = _.filter(result.radars, function(radar){return radar.ssTypeAir===filterCriteria.subType || radar.ssTypeLand===filterCriteria.subType ||radar.ssTypeSea===filterCriteria.subType});
-    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.ssTypeAir===filterCriteria.subType || radar.ssTypeLand===filterCriteria.subType ||radar.ssTypeSea===filterCriteria.subType});
-    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.ssTypeAir===filterCriteria.subType || radar.ssTypeLand===filterCriteria.subType ||radar.ssTypeSea===filterCriteria.subType});
+    result.radars = _.filter(result.radars, function(radar){return radar.subType===filterCriteria.subType; });
+    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.subType===filterCriteria.subType;});
+    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.subType===filterCriteria.subType;});
   }
   if(filterCriteria.name){
     result.radars = _.filter(result.radars, function(radar){return radar.nom === filterCriteria.name})
