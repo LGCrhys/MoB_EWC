@@ -85,6 +85,7 @@ app
 
   $scope.$on("filterChange", function(){
     updateGraph();
+    vm.datatable = DataService.getFilteredRadarsList();
   })
   function updateGraph(){
     vm.dashboard.widgets[0].chart.data= DataService.frequencyRange.data();
