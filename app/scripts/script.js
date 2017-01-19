@@ -49,7 +49,6 @@ app
     $rootScope.$broadcast("filterChange");
   }
 
-  vm.filterCriteria = filterCriteria;
 	vm.dashboard = {
 		widgets: [
 		{

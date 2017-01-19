@@ -71,7 +71,7 @@
                               </tr>
                           </thead>
                           <tbody md-body>
-                            <tr md-row ng-repeat="radar in mainCtrl.datatable.radars | filter : mainCtrl.filterCriteria">
+                            <tr md-row ng-repeat="radar in mainCtrl.datatable | filter : mainCtrl.filterCriteria ">
                               <td md-cell>{{radar.nom}}</td>
                               <td md-cell>{{radar.dateMaj}}</td>
                             </tr>
