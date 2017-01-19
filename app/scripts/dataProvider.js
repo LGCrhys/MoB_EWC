@@ -70,14 +70,12 @@
       radarsLocs:originalRadars.radarsLocs.slice()
     }
     if(filterCriteria.type){
-      filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return radar.type===filterCriteria.type});
       filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
-      filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return radar.type===filterCriteria.type});
+      filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
     }
     if(filterCriteria.subType){
-      filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return radar.subType===filterCriteria.subType; });
       filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.subType===filterCriteria.subType;});
-      filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return radar.subType===filterCriteria.subType;});
+      filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
     }
     if(filterCriteria.name){
       filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return radar.nom === filterCriteria.name})

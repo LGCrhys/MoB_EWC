@@ -23,15 +23,15 @@
 
   <md-content flex layout-padding>
     <div>
-      <button ng-click="mainCtrl.deleteCriteria('frequence')" ng-if="mainCtrl.filterCriteria.frequence">
+      <md-button ng-click="mainCtrl.deleteCriteria('frequence')" ng-if="mainCtrl.filterCriteria.frequence" class="md-raised md-primary">
         <span>Place de fréquences : {{mainCtrl.filterCriteria.frequence}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
-      </button>
-      <button ng-click="mainCtrl.deleteCriteria('type')" ng-if="mainCtrl.filterCriteria.type" >
+      </md-button>
+      <md-button ng-click="mainCtrl.deleteCriteria('type')" ng-if="mainCtrl.filterCriteria.type" class="md-raised md-primary">
         <span>Type : {{mainCtrl.filterCriteria.type}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
-      </button>
-      <button ng-click="mainCtrl.deleteCriteria('subType')" ng-if="mainCtrl.filterCriteria.subType">
+      </md-button>
+      <md-button ng-click="mainCtrl.deleteCriteria('subType')" ng-if="mainCtrl.filterCriteria.subType" class="md-raised md-primary">
         <span>Sous type : {{mainCtrl.filterCriteria.subType}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
-      </button>
+      </md-button>
     </div>
     <div gridster="mainCtrl.gridsterOptions">
 

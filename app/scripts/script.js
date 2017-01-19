@@ -90,7 +90,7 @@ app
 
   $scope.$on("filterChange", function(){
     updateGraph();
-    vm.datatable = DataService.getFilteredRadarsList(filterCriteria);
+    vm.datatable = DataService.getFilteredRadarsList(filterCriteria).radars;
   })
   function updateGraph(){
     //Did not understand, watch on sunburst did not work use API.
@@ -122,7 +122,7 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
-  vm.datatable = DataService.getFilteredRadarsList(filterCriteria);
+  vm.datatable = DataService.getFilteredRadarsList(filterCriteria).radars;
 
 })
 .controller("LeafletMapsController", function($scope,DataService,leafletData, filterCriteria) {
