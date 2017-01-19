@@ -1,12 +1,12 @@
 "use strict";
-var app = angular.module('plunker', ['nvd3', 'gridster', 'plunker.services','leaflet-directive','ngMaterial','md.data.table','ds.clock']);
+var app = angular.module('intelRef');
 
 app
 .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default')
     .primaryPalette('blue');
 })
-.controller('MainCtrl', function($scope, $timeout, DataService) {
+.controller('MainCtrl', function($scope, $timeout, $rootScope, DataService, filterCriteria) {
   var vm = this;
 
   vm.gridsterOptions = {
@@ -46,7 +46,7 @@ app
     if(criteria === 'subType')
       filterCriteria.subType = "";
 
-    updateGraph()
+    $rootScope.$broadcast("filterChange");
   }
 
   vm.filterCriteria = filterCriteria;
@@ -90,7 +90,7 @@ app
 
   $scope.$on("filterChange", function(){
     updateGraph();
-    vm.datatable = DataService.getFilteredRadarsList();
+    vm.datatable = DataService.getFilteredRadarsList(filterCriteria);
   })
   function updateGraph(){
     //Did not understand, watch on sunburst did not work use API.
@@ -122,10 +122,10 @@ app
   $timeout(function(){
     $scope.config.visible = true;
   }, 200);
-  vm.datatable = DataService.getFilteredRadarsList();
+  vm.datatable = DataService.getFilteredRadarsList(filterCriteria);
 
 })
-.controller("LeafletMapsController", function($scope,DataService,leafletData) {
+.controller("LeafletMapsController", function($scope,DataService,leafletData, filterCriteria) {
 
     $scope.hostile = true;
     $scope.inconnu = true;
@@ -151,7 +151,7 @@ app
       return markers;
     };
 
-    $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs());
+    $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs(filterCriteria));
 
 
 	var customControl = L.Control.extend({
@@ -283,6 +283,6 @@ app
     });
 
     $scope.$on("filterChange", function(){
-      $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs());
+      $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs(filterCriteria));
     })
 });

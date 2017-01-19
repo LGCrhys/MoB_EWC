@@ -1,141 +1,9 @@
 "use strict";
-var getOriginalRadar = (function (){
-  function setOrigin(radar, origin){
-    radar.origin = origin;
-    return radar;
-  }
-
-  _.each(locs, function(loc){
-    _.each(loc.Radars, function(radar){
-      radar.latitude = loc.latitude;
-      radar.longitude = loc.longitude;
-      radar.hostilite = loc.hostilite;
-    })
-  })
-
-  _.each(carriers, function(carrier){
-    _.each(carrier.Radars, function(radar){
-      radar.type = carrier.type;
-      radar.subType = carrier.ssTypeSea || carrier.ssTypeLand || carrier.ssTypeAir;
-    })
-  })
-
-  var radarsLocs =_.map(_.flatten(_.pluck(locs, "Radars")), function(radar){return setOrigin(radar, 'Loc') });
-  var radarsCarriers = _.map(_.flatten(_.pluck(carriers, "Radars")), function(radar){return setOrigin(radar, 'Carrier')});
-  var radars = radarsLocs.concat(radarsCarriers);
-  return function(){
-    return {
-      radars:radars,
-      radarsCarriers:radarsCarriers,
-      radarsLocs:radarsLocs
-    };
-  };
-})();
 
 
-var filterCriteria ={
-    frequence:"",
-    type:"",
-    subType:"",
-    name:""
-}
 
-function getFilteredRadarsList(){
-  var originalRadars = getOriginalRadar();
-  var result = {
-    radars:originalRadars.radars.slice(),
-    radarsCarriers:originalRadars.radarsCarriers.slice(),
-    radarsLocs:originalRadars.radarsLocs.slice()
-  }
-  if(filterCriteria.type){
-    result.radars = _.filter(result.radars, function(radar){return radar.type===filterCriteria.type});
-    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
-    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.type===filterCriteria.type});
-  }
-  if(filterCriteria.subType){
-    result.radars = _.filter(result.radars, function(radar){return radar.subType===filterCriteria.subType; });
-    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.subType===filterCriteria.subType;});
-    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.subType===filterCriteria.subType;});
-  }
-  if(filterCriteria.name){
-    result.radars = _.filter(result.radars, function(radar){return radar.nom === filterCriteria.name})
-    result.radarsCarriers = _.filter(result.radarsCarriers, function(radar){return radar.nom === filterCriteria.name})
-    result.radarsLocs = _.filter(result.radarsLocs, function(radar){return radar.nom === filterCriteria.name})
-  }
-  if (filterCriteria.frequence){
-    var range;
-    switch(filterCriteria.frequence){
-      case "3000-4000":
-        range=[3000, 4000];
-        break;
-      case "4001-5000":
-        range = [4001, 5000];
-        break;
-      case "5001-6000":
-        range = [5001, 6000];
-        break;
-      case "6001-7000":
-        range = [6001, 7000];
-        break;
-      case "7001-8000":
-        range = [7001, 8000];
-        break;
-      case "8001-9000":
-        range = [8001, 9000];
-        break;
-      case "9001-10000":
-        range = [9001, 10000];
-        break;
-    }
-    result.radars = filterByFrequencies(result.radars, range);
-    result.radarsCarriers=filterByFrequencies(result.radarsCarriers, range);
-    result.radarsLocs=filterByFrequencies(result.radarsLocs, range);
-  }
-  return result;
-}
-
-function filterByFrequencies(radars, frequencyRange){
-  var result = [];
-  _.each(radars, function(radar){
-    var modesInRange = _.filter(radar.modes, function(mode){
-      var radarFrequence= parseFloat(mode.sousMode.frequence);
-      return radarFrequence>=frequencyRange[0] && radarFrequence<=frequencyRange[1];
-    })
-    if(modesInRange.length){
-      result.push(radar);
-    }
-  })
-  return result;
-}
-
-var getFilteredLocs = function(){
-  //var tmp = getOriginalRadar().radarsLocs.slice();
-  /*var filteredLocs = [];
-  _.each(locs, function(loc,i){
-    if(filterCriteria.type){
-      if(!(_.filter(loc.Radars, function(radar){        
-        radar.type = carrier.type;
-        radar.subType = carrier.ssTypeSea || carrier.ssTypeLand || carrier.ssTypeAir;
-        return radar.type===filterCriteria.type
-      }).length)) return false;
-    }
-    if(filterCriteria.subType){
-      if(!(_.filter(loc.Radars, function(radar){return radar.subtype===filterCriteria.subType}).length)) return false;
-    }
-    if(filterCriteria.name){
-      if(!(_.filter(loc.Radars, function(radar){return radar.nom===filterCriteria.name}).length)) return false;
-    }
-    filteredLocs.push(loc);
-  });
-  return filteredLocs;*/
-  var filteredLocs = getOriginalRadar().radarsLocs.slice();
-  return _.uniq(filteredLocs,function(item){
-    return item.latitude && item.longitude;
-  });
-};
-
-angular.module('plunker.services', [])
-.factory('DataService', function($rootScope) {
+angular.module('intelRef')
+.factory('DataService', function($rootScope, filterCriteria, dataProvider) {
 
   return {
     frequencyRange: {
@@ -150,8 +18,8 @@ angular.module('plunker.services', [])
       options: getTypeSubTypeSunBurstChartOptions,
       data: getDataTypeSubTypeSunBurst
     },
-    getFilteredLocs : getFilteredLocs,
-    getFilteredRadarsList: getFilteredRadarsList
+    getFilteredLocs : dataProvider.getFilteredLocs,
+    getFilteredRadarsList: dataProvider.getFilteredRadars
   };
 
 
@@ -280,7 +148,7 @@ angular.module('plunker.services', [])
 
 
   function getRadarByFrequency(){
-    var modes =_.flatten(_.map(getFilteredRadarsList().radars, function(radar){return radar.modes}));
+    var modes =_.flatten(_.map(dataProvider.getFilteredRadars(filterCriteria).radars, function(radar){return radar.modes}));
     var modeByFrequency  = [
                   {label:"3000-4000", value:0,},
                   {label:"4001-5000", value:0,},
@@ -300,12 +168,12 @@ angular.module('plunker.services', [])
     return [{
           key: 'Loc',
           color: '#bcbd22',
-          values: countRadarsByFrequency(getFilteredRadarsList().radarsLocs, locsArray)
+          values: countRadarsByFrequency(dataProvider.getFilteredRadars(filterCriteria).radarsLocs, locsArray)
           },
           {
             key: 'Carrier',
             color: '#1f77b4',
-            values: countRadarsByFrequency(getFilteredRadarsList().radarsCarriers, carriersArray)
+            values: countRadarsByFrequency(dataProvider.getFilteredRadars(filterCriteria).radarsCarriers, carriersArray)
           }
         ];
   };
@@ -357,7 +225,7 @@ angular.module('plunker.services', [])
       "name":"radar",
       "children":[]
     }];
-    var filteredRadars = getFilteredRadarsList().radarsCarriers;
+    var filteredRadars =dataProvider.getFilteredRadars(filterCriteria).radarsCarriers;
     var subTypeCount = {};
     filteredRadars.forEach(function(radar){
       if(! subTypeCount[radar.type]){
