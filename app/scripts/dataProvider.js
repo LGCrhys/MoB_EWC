@@ -9,25 +9,6 @@
   }
 
   var getFilteredLocs = function(filterCriteria){
-    //var tmp = getOriginalRadar().radarsLocs.slice();
-    /*var filteredLocs = [];
-    _.each(locs, function(loc,i){
-      if(filterCriteria.type){
-        if(!(_.filter(loc.Radars, function(radar){
-          radar.type = carrier.type;
-          radar.subType = carrier.ssTypeSea || carrier.ssTypeLand || carrier.ssTypeAir;
-          return radar.type===filterCriteria.type
-        }).length)) return false;
-      }
-      if(filterCriteria.subType){
-        if(!(_.filter(loc.Radars, function(radar){return radar.subtype===filterCriteria.subType}).length)) return false;
-      }
-      if(filterCriteria.name){
-        if(!(_.filter(loc.Radars, function(radar){return radar.nom===filterCriteria.name}).length)) return false;
-      }
-      filteredLocs.push(loc);
-    });
-    return filteredLocs;*/
     var filteredLocs = getFilteredRadarsList(filterCriteria).radarsLocs.slice();
     return _.uniq(filteredLocs,function(item){
       return item.latitude && item.longitude;
@@ -41,6 +22,8 @@
             || filterCriteria.type !== storedFilterCriteria.type
             || filterCriteria.subType !== storedFilterCriteria.subType
             || filterCriteria.name !== storedFilterCriteria.name
+            || _.difference(filterCriteria.hostilities,storedFilterCriteria.hostilities).length
+            || _.difference(storedFilterCriteria.hostilities,filterCriteria.hostilities).length
   }
 
   function getFilteredRadarsList(filterCriteria){
@@ -57,18 +40,22 @@
       frequence:filterCriteriaToClone.frequence,
       type:filterCriteriaToClone.type,
       subType:filterCriteriaToClone.subType,
-      name:filterCriteriaToClone.name
+      name:filterCriteriaToClone.name,
+      hostilities:filterCriteriaToClone.hostilities
     }
   }
 
   function updateFilteredList(filterCriteria){
     storedFilterCriteria = copyFilterCriteria(filterCriteria);
-    var originalRadars = getOriginalRadar();
+
+    var originalRadars = getOriginalRadar();    
+
     filteredRadarsList = {
       radars:originalRadars.radars.slice(),
       radarsCarriers:originalRadars.radarsCarriers.slice(),
       radarsLocs:originalRadars.radarsLocs.slice()
     }
+
     if(filterCriteria.type){
       filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
       filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
@@ -81,6 +68,12 @@
       filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return radar.nom === filterCriteria.name})
       filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.nom === filterCriteria.name})
       filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return radar.nom === filterCriteria.name})
+    }
+
+    if(filterCriteria.hostilities){
+      filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
+      filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
+      filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
     }
     if (filterCriteria.frequence){
       var range;
@@ -145,6 +138,7 @@
       _.each(carrier.Radars, function(radar){
         radar.type = carrier.type;
         radar.subType = carrier.ssTypeSea || carrier.ssTypeLand || carrier.ssTypeAir;
+        radar.hostilite = carrier.hostilite;
       })
     })
 

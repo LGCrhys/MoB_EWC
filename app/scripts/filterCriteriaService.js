@@ -3,5 +3,6 @@ angular.module('intelRef').factory('filterCriteria', function(){
     frequence:"",
     type:"",
     subType:"",
-    name:""
+    name:"",
+    hostilities: ['hostile','inconnu','ami']
 }});

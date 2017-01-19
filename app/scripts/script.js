@@ -93,9 +93,17 @@ app
   })
   function updateGraph(){
     //Did not understand, watch on sunburst did not work use API.
-    vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
-    vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
-    vm.dashboard.widgets[2].chart.api.updateWithData(DataService.stackedFrequencyRange.data());
+    if(!filterCriteria.hostilities.length){
+      // /!\ Prevent D3JS issue /!\
+      vm.dashboard.widgets[0].chart.api.updateWithData([]);
+      vm.dashboard.widgets[1].chart.api.updateWithData([]);
+      vm.dashboard.widgets[2].chart.api.updateWithData([]);      
+    }
+    else{      
+      vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
+      vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
+      vm.dashboard.widgets[2].chart.api.updateWithData(DataService.stackedFrequencyRange.data());
+    }
 
   }
 
@@ -124,7 +132,7 @@ app
   vm.datatable = DataService.getFilteredRadarsList(filterCriteria).radars;
 
 })
-.controller("LeafletMapsController", function($scope,DataService,leafletData, filterCriteria) {
+.controller("LeafletMapsController", function($scope,$rootScope,DataService,leafletData, filterCriteria) {
 
     $scope.hostile = true;
     $scope.inconnu = true;
@@ -133,9 +141,6 @@ app
     var addressPointsToMarkers = function(points) {
       var markers = [];
       points.map(function(ap) {
-        if(ap.hostilite && !$scope[ap.hostilite.toLowerCase()]){
-          return false;
-        }
         markers.push({
           layer: 'locs',
   	      lat: parseFloat(ap.latitude.replace(',','.')),
@@ -152,63 +157,39 @@ app
 
     $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs(filterCriteria));
 
+  	var legendControl = L.Control.extend({
 
-	var customControl = L.Control.extend({
+  		options:{position: 'bottomleft'},
 
-	  options: {
-	    position: 'topleft'
-	  },
-
-	  onAdd: function (map) {
-	  	 var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-custom');
-
-	    container.style.backgroundColor = 'white';
-	    container.style.backgroundImage = "url('assets/refresh.png')";
-	    container.style.backgroundSize = "25px 25px";
-	    container.style.width = '25px';
-	    container.style.height = '25px';
-
-	    container.onclick = function(){
-	      //TODO
-	    }
-	    return container
-	  },
-
-	});
-
-	var legendControl = L.Control.extend({
-
-		options:{position: 'bottomleft'},
-
-        onAdd: function (map) {
-            var div = L.DomUtil.create('div', 'info legend'),
-                labels = [];
+          onAdd: function (map) {
+              var div = L.DomUtil.create('div', 'info legend'),
+                  labels = [];
 
 
-            labels.push('<i class="hostile active" ></i> Hostile');
-            labels.push('<i class="inconnu active" ></i> Inconnu');
-            labels.push('<i class="ami active" ></i> Ami');
+              labels.push('<i class="hostile active" ></i> Hostile');
+              labels.push('<i class="inconnu active" ></i> Inconnu');
+              labels.push('<i class="ami active" ></i> Ami');
 
-            div.innerHTML = labels.join('<br>');
+              div.innerHTML = labels.join('<br>');
 
-            $('.hostile', div).on('click', $scope.toggleClass);
-            $('.inconnu', div).on('click', $scope.toggleClass);
-            $('.ami', div).on('click', $scope.toggleClass);
+              $('.hostile', div).on('click', $scope.toggleClass);
+              $('.inconnu', div).on('click', $scope.toggleClass);
+              $('.ami', div).on('click', $scope.toggleClass);
 
-            return div;
-        }
-    });
+              return div;
+          }
+      });
 
     $scope.toggleClass = function(e){
     	if(!$(e.target).hasClass('active')){
-        $scope[e.target.className] = true;
+        filterCriteria.hostilities = _.union(filterCriteria.hostilities,[e.target.className]);//.push(e.target.className);
     		$(e.target).addClass("active");
     	}
     	else{
     		$(e.target).removeClass("active");
-        $scope[e.target.className] = false;
+        filterCriteria.hostilities = _.without(filterCriteria.hostilities,e.target.className);
     	}
-      $scope.markers = addressPointsToMarkers(DataService.getFilteredLocs());
+      $rootScope.$broadcast("filterChange");
     };
 
     angular.extend($scope, {
@@ -277,7 +258,6 @@ app
     });
 
     leafletData.getMap().then(function(map) {
-    	map.addControl(new customControl());
     	map.addControl(new legendControl());
     });
 
