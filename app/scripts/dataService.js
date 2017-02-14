@@ -93,6 +93,7 @@ angular.module('intelRef')
                 color: function e(e,i){
                   return colorsByType[e.toLowerCase()];
                 },
+                key: function (d){return d.key;},
                 duration: 250,
                 showLabels: true,
                 labelFormat: function (d){
@@ -170,11 +171,11 @@ angular.module('intelRef')
       }
     });
 
-    var result = {"name":"radar", children:[]};
+    var result = {"name":"radar", "key":"radar", children:[]};
     for(var type in subTypeCount){
-      var child = {"name":type, children:[]};
+      var child = {"name":type, "key":type, children:[]};
       for(var subtype in subTypeCount[type]){
-        child.children.push({"name":subtype, "size":subTypeCount[type][subtype].count});
+        child.children.push({"name":subtype, "size":subTypeCount[type][subtype].count, "key":type+subtype});
       }
       result.children.push(child);
     }
