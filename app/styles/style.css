@@ -36,6 +36,13 @@ ul {
     height: 100%;
     padding-top: 30px;
 }
+.reset-button {
+    position: absolute;
+    right: 0px;
+    min-width: 20px;
+    min-height: 20px;
+    line-height:  20px;
+}
 .box-content-padded {
     height: 100%;
     padding: 0px;

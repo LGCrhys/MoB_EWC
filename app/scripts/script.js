@@ -39,12 +39,14 @@ app
 
   vm.deleteCriteria = function(criteria){
     console.log("criteria " + criteria)
-    if(criteria ==='frequence')
-      filterCriteria.frequence = "3000-10000";
-    if(criteria === 'type')
+    if(criteria ==='frequence'){
+      DataService.clearFrequenceColor();
+      filterCriteria.frequence = {min:3000,max:10000};
+    }
+    if(criteria === 'type'){
       filterCriteria.type = "" ;
-    if(criteria === 'subType')
       filterCriteria.subType = "";
+    }
 
     $rootScope.$broadcast("filterChange");
   }
@@ -56,6 +58,7 @@ app
 			row: 0,
 			sizeY: 1,
 			sizeX: 1,
+      criteria: 'frequence',
 			name: "Radars par fréquence",
 			chart: {
 			  options: DataService.frequencyRange.options("graphFreq1"),
@@ -67,6 +70,7 @@ app
 			row: 0,
 			sizeY: 1,
 			sizeX: 1,
+      criteria: "type",
 			name: "Type and Subtype",
 			chart: {
 			  options: DataService.typeAndSubType.options("graphSunburst1"),
@@ -93,9 +97,11 @@ app
     else{      
       if(vm.dashboard.widgets[0].chart.options.chart.id !== sourceId){
         vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
+        vm.dashboard.widgets[1].chart.api.refresh();
       }
       if(vm.dashboard.widgets[1].chart.options.chart.id !== sourceId){
         vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
+        vm.dashboard.widgets[1].chart.api.refresh();
       }
     }
 

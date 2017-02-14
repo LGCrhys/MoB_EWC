@@ -22,7 +22,7 @@
 
 
   <md-content flex layout-padding>
-    <!--<div>
+    <!-- <div>
       <md-button ng-click="mainCtrl.deleteCriteria('frequence')" ng-if="mainCtrl.filterCriteria.frequence" class="md-raised md-primary">
         <span>Place de fréquences : {{mainCtrl.filterCriteria.frequence}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
       </md-button>
@@ -32,16 +32,19 @@
       <md-button ng-click="mainCtrl.deleteCriteria('subType')" ng-if="mainCtrl.filterCriteria.subType" class="md-raised md-primary">
         <span>Sous type : {{mainCtrl.filterCriteria.subType}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
       </md-button>
-    </div> -->
+    </div> --> 
     <div gridster="mainCtrl.gridsterOptions">
 
     	<ul class="with-3d-shadow with-transitions">
     		<li gridster-item="widget" ng-repeat="widget in mainCtrl.dashboard.widgets">
     		  <div class="box">
               <div class="box-header">
-                  <h3>{{ widget.name }}</h3>
+                  <h3>{{ widget.name }}</h3>                  
               </div>
               <div class="box-content">
+                <md-button class=" reset-button md-raised" ng-click="mainCtrl.deleteCriteria(widget.criteria)">
+                  <span><i class="fa fa-refresh" aria-hidden="true"></i></span>
+                </md-button>
                 <nvd3 options="widget.chart.options"
                       data="widget.chart.data"
                       api="widget.chart.api"

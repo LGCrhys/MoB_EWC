@@ -15,12 +15,17 @@ angular.module('intelRef')
       data: getDataTypeSubTypeSunBurst
     },
     getFilteredLocs : dataProvider.getFilteredLocs,
-    getFilteredRadarsList: dataProvider.getFilteredRadars
+    getFilteredRadarsList: dataProvider.getFilteredRadars,
+    clearFrequenceColor : clearFrequenceColor
   };
 
+  var frequenceColor = null;
+
+  function clearFrequenceColor(){
+    frequenceColor = null;
+  }
 
 	function frequencyRangeChartOptions(id) {
-    var color = null;
 	  return {
             chart: {
                 id: id,
@@ -33,12 +38,12 @@ angular.module('intelRef')
                 },
                 color: function (d, i) {
                     var key = i === undefined ? d : i;
-                    return color || d.color || d3.scale.category10().range()[i];
+                    return frequenceColor || d.color || d3.scale.category10().range()[i];
                 },
                 discretebar:{
                   dispatch: {
                       elementClick: function(e) {
-                        color = e.color;
+                        frequenceColor = e.color;
                         filterCriteria.frequence.min=e.data.xmin;
                         filterCriteria.frequence.max=e.data.xmax;
                         $rootScope.$broadcast("filterChange");
@@ -76,19 +81,17 @@ angular.module('intelRef')
 
   function getTypeSubTypeSunBurstChartOptions(id){
       var colorsByType = {
-        "radar" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#C9C9C9"]),
-        "sea" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#9FB6FC"]), 
-        "land" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#BF8654"]), 
-        "air" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#EDE161"])
+        "radar" : "#C9C9C9",
+        "sea" : "#9FB6FC", 
+        "land" : "#BF8654", 
+        "air" : "#EDE161"
       };
-      var colorCount = 0;
       return {
             chart: {
                 id: id,
                 type: 'sunburstChart',
-                color: function e(e){
-                  colorCount += 1;
-                  return colorsByType[e.toLowerCase()](colorCount);
+                color: function e(e,i){
+                  return colorsByType[e.toLowerCase()];
                 },
                 duration: 250,
                 showLabels: true,
@@ -116,8 +119,6 @@ angular.module('intelRef')
                         if(clickedElement.depth===2){
                           filterCriteria.subType=clickedElement.name;
                         }
-
-                        $rootScope.$broadcast("filterChange",id);
                     }
                   }
                 }
