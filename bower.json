@@ -23,7 +23,9 @@
     "angular-ui-clock": "^0.5.1",
     "angular-material-data-table": "^0.10.10",
     "Leaflet.awesome-markers": "leaflet.awesome-markers#^2.0.2",
-    "font-awesome":"4.7.0"
+    "font-awesome": "4.7.0",
+    "nvd3": "^1.8.5",
+    "angular-nvd3": "^1.0.9"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

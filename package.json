@@ -41,6 +41,7 @@
     "test": "karma start test\\karma.conf.js"
   },
   "dependencies": {
-    "angular-gridster": "^0.13.14"
+    "angular-gridster": "^0.13.14",
+    "d3": "^3.5.17"
   }
 }
