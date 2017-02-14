@@ -20,6 +20,7 @@ angular.module('intelRef')
 
 
 	function frequencyRangeChartOptions(id) {
+    var color = null;
 	  return {
             chart: {
                 id: id,
@@ -30,9 +31,14 @@ angular.module('intelRef')
                     bottom: 30,
                     left: 55
                 },
+                color: function (d, i) {
+                    var key = i === undefined ? d : i;
+                    return color || d.color || d3.scale.category10().range()[i];
+                },
                 discretebar:{
                   dispatch: {
                       elementClick: function(e) {
+                        color = e.color;
                         filterCriteria.frequence.min=e.data.xmin;
                         filterCriteria.frequence.max=e.data.xmax;
                         $rootScope.$broadcast("filterChange");
@@ -132,28 +138,6 @@ angular.module('intelRef')
     return  _.reduce(modes, reduction, modeByFrequency);
   };
 
-  function getDataStackedRadarFrequencies(){
-    var locsArray = prepareArrayForCountByFrequency();
-    var carriersArray=prepareArrayForCountByFrequency();
-    return [{
-          key: 'Loc',
-          color: '#bcbd22',
-          values: countRadarsByFrequency(dataProvider.getFilteredRadars(filterCriteria).radarsLocs, locsArray)
-          },
-          {
-            key: 'Carrier',
-            color: '#1f77b4',
-            values: countRadarsByFrequency(dataProvider.getFilteredRadars(filterCriteria).radarsCarriers, carriersArray)
-          }
-        ];
-  };
-
-  function countRadarsByFrequency(radars, resultArray){
-    var modes =_.flatten(_.map(radars, function(radar){return radar.modes}));
-    var reduction = getReductionByFrequencyFunctionForProperty("y");
-    return  _.reduce(modes, reduction, resultArray);
-  };
-
   function getReductionByFrequencyFunctionForProperty(property){
     return function reduction(memo, mode){
       var frequence = parseFloat(mode.sousMode.frequence);
@@ -165,14 +149,6 @@ angular.module('intelRef')
       });
       return memo;
     }
-  }
-
-  function prepareArrayForCountByFrequency(){
-    var result =[];
-    for (var index=0; index<7; index++){
-      result.push({x:index, y:0});
-    }
-    return result;
   }
 
   function getDataTypeSubTypeSunBurst(){
