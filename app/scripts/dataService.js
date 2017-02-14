@@ -96,7 +96,7 @@ angular.module('intelRef')
                 duration: 250,
                 showLabels: true,
                 labelFormat: function (d){
-                  return d.name + ' ['+d.value+']';
+                  return d.name;
                 },
                 margin : {
                   top: 50,

@@ -9,30 +9,29 @@
 
   <body ng-controller="MainCtrl as mainCtrl">
     <md-toolbar>
-      <div class="md-toolbar-tools">
-            <span class="md-display-1" style="font-family: 'Rationale', sans-serif;">INTEL Reference</span>
-            <span flex></span>
-            <ds-widget-clock show-digital theme="blue-light" digital-format="'hh:mm:ss a'"></ds-widget-clock>
-            <md-button class="md-fab md-icon-button md-primary" aria-label="User">
-              <md-tooltip>User</md-tooltip>
-              <img src="assets/user.png" style="width:100%;   padding-bottom: 50%;"/>
+      <div class="md-toolbar-tools"> 
+          <md-menu>
+            <md-button class="md-icon-button" aria-label="More" ng-mouseenter="$mdMenu.open()">
+              <img src="assets/more-vert.png" style="width:100%;   padding-bottom: 50%;"/>
             </md-button>
+            <md-menu-content width="2" ng-mouseleave="$mdMenu.close()">
+                <md-menu-item><md-button>Help</md-button></md-menu-item>
+                <md-menu-item><md-button>About</md-button></md-menu-item>
+                <md-menu-item><md-button>Log Out</md-button></md-menu-item>
+          </md-menu>
+          <span class="md-display-1" style="font-family: 'Rationale', sans-serif;">INTEL Reference</span>
+          <span flex></span>
+          <ds-widget-clock show-digital theme="blue-light" digital-format="'hh:mm:ss a'"></ds-widget-clock>
+          <md-button class="md-fab md-icon-button md-primary" aria-label="User">
+            <md-tooltip>User</md-tooltip>
+            <img src="assets/user.png" style="width:100%;   padding-bottom: 50%;"/>
+          </md-button>
+
        </div>
     </md-toolbar>
 
 
   <md-content flex layout-padding>
-    <!-- <div>
-      <md-button ng-click="mainCtrl.deleteCriteria('frequence')" ng-if="mainCtrl.filterCriteria.frequence" class="md-raised md-primary">
-        <span>Place de fréquences : {{mainCtrl.filterCriteria.frequence}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
-      </md-button>
-      <md-button ng-click="mainCtrl.deleteCriteria('type')" ng-if="mainCtrl.filterCriteria.type" class="md-raised md-primary">
-        <span>Type : {{mainCtrl.filterCriteria.type}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
-      </md-button>
-      <md-button ng-click="mainCtrl.deleteCriteria('subType')" ng-if="mainCtrl.filterCriteria.subType" class="md-raised md-primary">
-        <span>Sous type : {{mainCtrl.filterCriteria.subType}} <i class="fa fa-trash-o" aria-hidden="true"></i></span>
-      </md-button>
-    </div> --> 
     <div gridster="mainCtrl.gridsterOptions">
 
     	<ul class="with-3d-shadow with-transitions">
