@@ -58,7 +58,7 @@ app
 			sizeX: 1,
 			name: "Radars par fréquence",
 			chart: {
-			  options: DataService.frequencyRange.options(),
+			  options: DataService.frequencyRange.options("graphFreq1"),
 			  data: DataService.frequencyRange.data(),
 			  api: {}
 			}
@@ -69,7 +69,7 @@ app
 			sizeX: 1,
 			name: "Type and Subtype",
 			chart: {
-			  options: DataService.typeAndSubType.options(),
+			  options: DataService.typeAndSubType.options("graphSunburst1"),
 			  data: DataService.typeAndSubType.data(),
 			  api: {},
 			}
@@ -80,29 +80,37 @@ app
 			sizeX: 1,
 			name: "Radars par fréquence",
 			chart: {
-			  options: DataService.stackedFrequencyRange.options(),
+			  options: DataService.stackedFrequencyRange.options("graphFreq2"),
 			  data: DataService.stackedFrequencyRange.data(),
 			  api: {}
 			}
 		}]
 	};
 
-  $scope.$on("filterChange", function(){
-    updateGraph();
+  $scope.$on("filterChange", function(e,sourceId){
+    updateGraph(sourceId);
     vm.datatable = DataService.getFilteredRadarsList(filterCriteria).radars;
   })
-  function updateGraph(){
+  function updateGraph(sourceId){
     //Did not understand, watch on sunburst did not work use API.
     if(!filterCriteria.hostilities.length){
       // /!\ Prevent D3JS issue /!\
-      vm.dashboard.widgets[0].chart.api.updateWithData([]);
-      vm.dashboard.widgets[1].chart.api.updateWithData([]);
-      vm.dashboard.widgets[2].chart.api.updateWithData([]);      
+      _.each(vm.dashboard.widgets, function(widget){
+        if(widget.chart.options.chart.id !== sourceId){
+          widget.chart.api.updateWithData([]);
+        }
+      }); 
     }
     else{      
-      vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
-      vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
-      vm.dashboard.widgets[2].chart.api.updateWithData(DataService.stackedFrequencyRange.data());
+      if(vm.dashboard.widgets[0].chart.options.chart.id !== sourceId){
+        vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
+      }
+      if(vm.dashboard.widgets[1].chart.options.chart.id !== sourceId){
+        vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
+      }
+      if(vm.dashboard.widgets[2].chart.options.chart.id !== sourceId){
+        vm.dashboard.widgets[2].chart.api.updateWithData(DataService.stackedFrequencyRange.data());
+      }
     }
 
   }

@@ -23,9 +23,10 @@ angular.module('intelRef')
   };
 
 
-	function frequencyRangeChartOptions() {
+	function frequencyRangeChartOptions(id) {
 	  return {
             chart: {
+                id: id,
                 type: 'discreteBarChart',
                 margin : {
                     top: 10,
@@ -68,9 +69,10 @@ angular.module('intelRef')
         ];
 	};
 
-  function getStackedLocationByFrequencyChartOptions(){
+  function getStackedLocationByFrequencyChartOptions(id){
     return {
         chart: {
+            id: id,
             type: 'multiBarChart',
             margin : {
                 top: 220,
@@ -110,12 +112,27 @@ angular.module('intelRef')
     };
   };
 
-  function getTypeSubTypeSunBurstChartOptions(){
+  function getTypeSubTypeSunBurstChartOptions(id){
+      var colorsByType = {
+        "radar" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#C9C9C9"]),
+        "sea" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#9FB6FC"]), 
+        "land" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#BF8654"]), 
+        "air" : d3.scale.linear().domain([0,10]).range(["#C9C9C9","#EDE161"])
+      };
+      var colorCount = 0;
       return {
             chart: {
+                id: id,
                 type: 'sunburstChart',
-                color: d3.scale.category20c(),
+                color: function e(e){
+                  colorCount += 1;
+                  return colorsByType[e.toLowerCase()](colorCount);
+                },
                 duration: 250,
+                showLabels: true,
+                labelFormat: function (d){
+                  return d.name + ' ['+d.value+']';
+                },
                 margin : {
                   top: 50,
                   right: 10,
@@ -138,7 +155,7 @@ angular.module('intelRef')
                           filterCriteria.subType=clickedElement.name;
                         }
 
-                        $rootScope.$broadcast("filterChange");
+                        $rootScope.$broadcast("filterChange",id);
                     }
                   }
                 }
