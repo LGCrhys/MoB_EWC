@@ -40,7 +40,7 @@ app
   vm.deleteCriteria = function(criteria){
     console.log("criteria " + criteria)
     if(criteria ==='frequence')
-      filterCriteria.frequence = "";
+      filterCriteria.frequence = "3000-10000";
     if(criteria === 'type')
       filterCriteria.type = "" ;
     if(criteria === 'subType')
@@ -73,17 +73,6 @@ app
 			  data: DataService.typeAndSubType.data(),
 			  api: {},
 			}
-		},{
-			col: 0,
-			row: 1,
-			sizeY: 1,
-			sizeX: 1,
-			name: "Radars par fréquence",
-			chart: {
-			  options: DataService.stackedFrequencyRange.options("graphFreq2"),
-			  data: DataService.stackedFrequencyRange.data(),
-			  api: {}
-			}
 		}]
 	};
 
@@ -107,9 +96,6 @@ app
       }
       if(vm.dashboard.widgets[1].chart.options.chart.id !== sourceId){
         vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());
-      }
-      if(vm.dashboard.widgets[2].chart.options.chart.id !== sourceId){
-        vm.dashboard.widgets[2].chart.api.updateWithData(DataService.stackedFrequencyRange.data());
       }
     }
 

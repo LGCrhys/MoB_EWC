@@ -10,10 +10,6 @@ angular.module('intelRef')
       options: frequencyRangeChartOptions,
       data: frequencyRangeChartData
     },
-    stackedFrequencyRange:{
-      options: getStackedLocationByFrequencyChartOptions ,
-      data: getDataStackedRadarFrequencies
-    },
     typeAndSubType:{
       options: getTypeSubTypeSunBurstChartOptions,
       data: getDataTypeSubTypeSunBurst
@@ -37,7 +33,8 @@ angular.module('intelRef')
                 discretebar:{
                   dispatch: {
                       elementClick: function(e) {
-                        filterCriteria.frequence=e.data.label;
+                        filterCriteria.frequence.min=e.data.xmin;
+                        filterCriteria.frequence.max=e.data.xmax;
                         $rootScope.$broadcast("filterChange");
                     }   //e.data.label
                   }
@@ -51,8 +48,10 @@ angular.module('intelRef')
                 duration: 500,
                 xAxis: {
                     axisLabel: 'Plage de fréquence',
-                    axisLabelDistance: -10
+                    axisLabelDistance: 10,
+                    staggerLabels: true
                 },
+                //xScale: function e(e){return ["5000","6000"]},
                 yAxis: {
                     axisLabel: 'total',
                     axisLabelDistance: -10
@@ -68,49 +67,6 @@ angular.module('intelRef')
             }
         ];
 	};
-
-  function getStackedLocationByFrequencyChartOptions(id){
-    return {
-        chart: {
-            id: id,
-            type: 'multiBarChart',
-            margin : {
-                top: 220,
-                right: 20,
-                bottom: 45,
-                left: 45
-            },
-            clipEdge: true,
-            duration: 500,
-            stacked: true,
-            xAxis: {
-                axisLabel: 'Plage de fréquence',
-                showMaxMin: false,
-                tickFormat: getFrequencyRangeTickFunction()
-            },
-            yAxis: {
-                axisLabel: 'count',
-                axisLabelDistance: -20,
-                tickFormat: function(d) {return d;}
-            }
-        }
-    };
-  };
-  function getFrequencyRangeTickFunction(){
-    var tickLabels=[
-                  "3000-4000",
-                  "4001-5000",
-                  "5001-6000",
-                  "6001-7000",
-                  "7001-8000",
-                  "8001-9000",
-                  "9001-10000"
-    ];
-
-    return function(d){
-      return tickLabels[d];
-    };
-  };
 
   function getTypeSubTypeSunBurstChartOptions(id){
       var colorsByType = {
@@ -166,15 +122,12 @@ angular.module('intelRef')
 
   function getRadarByFrequency(){
     var modes =_.flatten(_.map(dataProvider.getFilteredRadars(filterCriteria).radars, function(radar){return radar.modes}));
-    var modeByFrequency  = [
-                  {label:"3000-4000", value:0,},
-                  {label:"4001-5000", value:0,},
-                  {label:"5001-6000", value:0,},
-                  {label:"6001-7000", value:0,},
-                  {label:"7001-8000", value:0,},
-                  {label:"8001-9000", value:0,},
-                  {label:"9001-10000", value:0},
-                ];
+    var step = (filterCriteria.frequence.max-filterCriteria.frequence.min) / 10;
+    var range = _.range(filterCriteria.frequence.min,filterCriteria.frequence.max,step);// todo modification
+    var modeByFrequency = [];
+    _.each(range, function(tick){
+      modeByFrequency.push({label:(tick+1)+'-'+(tick+step), value:0, xmin:tick, xmax:tick+step});
+    })
     var reduction = getReductionByFrequencyFunctionForProperty("value");
     return  _.reduce(modes, reduction, modeByFrequency);
   };
@@ -204,27 +157,12 @@ angular.module('intelRef')
   function getReductionByFrequencyFunctionForProperty(property){
     return function reduction(memo, mode){
       var frequence = parseFloat(mode.sousMode.frequence);
-      if(frequence>=3000 && frequence<=4000){
-        memo[0][property] = memo[0][property] +1;
-      }
-      if(frequence>=4001 && frequence<=5000){
-        memo[1][property] = memo[1][property] +1;
-      }
-      if(frequence>=5001 && frequence<=6000){
-        memo[2][property] = memo[2][property] +1;
-      }
-      if(frequence>=6001 && frequence<=7000){
-        memo[3][property] = memo[3][property] +1;
-      }
-      if(frequence>=7001 && frequence<=8000){
-        memo[4][property] = memo[4][property] +1;
-      }
-      if(frequence>=8001 && frequence<=9000){
-        memo[5][property] = memo[5][property] +1;
-      }
-      if(frequence>=9001 && frequence<=10000){
-        memo[6][property] = memo[6][property] +1;
-      }
+      var range;
+      _.each(memo, function(m){
+        if(frequence>m.xmin && frequence<=m.xmax){
+          m[property] += 1;
+        }
+      });
       return memo;
     }
   }
