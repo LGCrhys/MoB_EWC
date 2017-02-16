@@ -97,7 +97,7 @@ app
     else{      
       if(vm.dashboard.widgets[0].chart.options.chart.id !== sourceId){
         vm.dashboard.widgets[0].chart.api.updateWithData(DataService.frequencyRange.data());
-        vm.dashboard.widgets[1].chart.api.refresh();
+        vm.dashboard.widgets[0].chart.api.refresh();
       }
       if(vm.dashboard.widgets[1].chart.options.chart.id !== sourceId){
         vm.dashboard.widgets[1].chart.api.updateWithData(DataService.typeAndSubType.data());

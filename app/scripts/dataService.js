@@ -118,8 +118,10 @@ angular.module('intelRef')
                           filterCriteria.type=clickedElement.name;
                           filterCriteria.subType="";
                         if(clickedElement.depth===2){
+                          filterCriteria.type=clickedElement.parent.name;
                           filterCriteria.subType=clickedElement.name;
                         }
+                        $rootScope.$broadcast("filterChange");
                     }
                   }
                 }

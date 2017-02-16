@@ -60,10 +60,12 @@
 
     if(filterCriteria.type){
       filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
+      filteredRadarsList.radarsLocs = [];
       filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
     }
     if(filterCriteria.subType){
       filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.subType===filterCriteria.subType;});
+      filteredRadarsList.radarsLocs = [];
       filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
     }
     if(filterCriteria.name){
