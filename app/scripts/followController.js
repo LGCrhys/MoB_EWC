@@ -5,7 +5,7 @@ app
 .controller("FollowController", function($scope,$rootScope,DataService,leafletData, filterCriteria) {
 
     angular.extend($scope, {
-       center: {
+        center: {
 	        lat: 48.4000000,
 	        lng: -4.4833300,
 	        zoom: 8
@@ -91,16 +91,46 @@ app
 	var drawControl = new L.Control.Draw(options);
 
     var boatMarker = L.boatMarker(new L.LatLng(48.735572, -4.930420), {
-		color: "#f1c40f",   // color of the boat
-		idleCircle: false   // if set to true, the icon will draw a circle if
-		                    // boatspeed == 0 and the ship-shape if speed > 0
+		color: "#f1c40f",
+		idleCircle: false  
 		});
 
+	var startDate = new Date();
+	startDate.setUTCMinutes(0, 0, 0);
 
-    leafletData.getMap().then(function(map) {
+	var timeDimension = new L.TimeDimension({		
+	        timeInterval: "2014-09-30/2014-10-30",	
+	        period: "PT5M"
+	    });
+
+	var player = new L.TimeDimension.Player({
+	    transitionTime: 100, 
+	    loop: false,
+	    startOver:true
+	}, timeDimension);
+
+	var timeDimensionControlOptions = {
+	    player: player,
+	    timeDimension: timeDimension,
+	    position: 'bottomleft',
+	    autoPlay: false,	    
+        loopButton: true,
+	    minSpeed: 1,
+	    speedStep: 0.5,
+	    maxSpeed: 15,
+	    timeSliderDragUpdate: true
+	};
+
+	var timeDimensionControl = new L.Control.TimeDimension(timeDimensionControlOptions);
+
+    leafletData.getMap().then(function(map) {    	
+		// helper to share the timeDimension object between all layers
+		map.timeDimension = timeDimension; 
+		// otherwise you have to set the 'timeDimension' option on all layers.
 		map.addLayer(editableLayers);
     	map.addLayer(boatMarker);
 		map.addControl(drawControl);
+		map.addControl(timeDimensionControl);
 		leafletData.getLayers().then(function(baselayers) {
             map.on('draw:created', function (e) {
               var layer = e.layer;

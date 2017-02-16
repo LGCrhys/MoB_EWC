@@ -63,6 +63,8 @@ module.exports = function(config) {
       'bower_components/nvd3/build/nv.d3.js',
       'bower_components/angular-nvd3/dist/angular-nvd3.js',
       'bower_components/leaflet-draw/dist/leaflet.draw.js',
+      'bower_components/iso8601-js-period/iso8601.min.js',
+      'bower_components/leaflet-timedimension/dist/leaflet.timedimension.src.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

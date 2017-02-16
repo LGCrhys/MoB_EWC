@@ -27,7 +27,9 @@
     "nvd3": "^1.8.5",
     "angular-nvd3": "^1.0.9",
     "leaflet-draw": "leaflet.draw#^0.4.9",
-    "leaflet-fullscreen": "^1.0.2"
+    "leaflet-fullscreen": "^1.0.2",
+    "leaflet-timedimension": "^1.0.6",
+    "iso8601-js-period": "*"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"
