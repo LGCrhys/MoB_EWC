@@ -6,12 +6,13 @@ app
   $mdThemingProvider.theme('default')
     .primaryPalette('blue');
 })
-.controller('MainCtrl', function($scope, $timeout, $rootScope, DataService, filterCriteria) {
+.controller('MainCtrl', function($scope, $timeout, $rootScope,DataService, filterCriteria) {
   var vm = this;
 
   vm.gridsterOptions = {
-		margins: [20, 20],
+		margins: [10, 10],
 		columns: 4,
+    floating: true,
 		mobileModeEnabled: false,
 		draggable: {
 			handle: 'h3'

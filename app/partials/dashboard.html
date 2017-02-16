@@ -1,0 +1,65 @@
+<div gridster="mainCtrl.gridsterOptions">
+  <ul class="with-3d-shadow with-transitions">
+    <li gridster-item="widget" ng-repeat="widget in mainCtrl.dashboard.widgets">
+      <div class="box">
+          <div class="box-header">
+              <h3>{{ widget.name }}</h3>                  
+          </div>
+          <div class="box-content">
+            <md-button class=" reset-button md-raised" ng-click="mainCtrl.deleteCriteria(widget.criteria)">
+              <span><i class="fa fa-refresh" aria-hidden="true"></i></span>
+            </md-button>
+            <nvd3 options="widget.chart.options"
+                  data="widget.chart.data"
+                  api="widget.chart.api"
+                  config="config"
+                  events="events"></nvd3>
+          </div>
+      </div>
+    </li>
+    <li gridster-item row="1" col="0" size-x="2" size-y="1">
+      <div class="box">
+        <div class="box-header">
+              <h3>Radars</h3>
+          </div>
+          <div class="box-content-padded">
+            <md-input-container class="md-block filter-input">
+              <label>Filtrer par nom : </label>
+              <input ng-model="mainCtrl.filterCriteria.nom">
+            </md-input-container>
+            <div id="table-wrapper">
+              <div id="table-scroll">
+                <md-table-container>
+                  <table  md-table>
+                      <thead md-head>
+                          <tr md-row>
+                              <th md-column><span class="text">Nom</span></th>
+                              <th md-column><span class="text">Date mise à jour</span></th>
+                          </tr>
+                      </thead>
+                      <tbody md-body>
+                        <tr md-row ng-repeat="radar in mainCtrl.datatable | filter : mainCtrl.filterCriteria ">
+                          <td md-cell>{{radar.nom}}</td>
+                          <td md-cell>{{radar.dateMaj}}</td>
+                        </tr>
+                      </tbody>
+                  </table>
+                </md-table-container>
+              </div>
+            </div>
+          </div>
+      </div>
+    </li>
+    <li gridster-item col="3" row="0" size-x="2" size-y="2">
+      <div class="box">
+        <div class="box-header">
+          <h3>Leaflet Map</h3>
+        </div>
+        <div class="map" ng-controller="LeafletMapsController">
+            <leaflet lf-center="center"  legend="legend" controls="controls" layers="layers" markers="markers" width="100%" height="95%"></leaflet>
+        </div>
+      </div>
+    </li>
+  </ul>
+
+</div>
