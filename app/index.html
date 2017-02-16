@@ -7,7 +7,7 @@
     <script>document.write('<base href="' + document.location + '" />');</script>
   </head>
 
-  <body ng-controller="MainCtrl as mainCtrl">
+  <body ng-controller="MainCtrl as mainCtrl" class="ng-cloak">
     <md-toolbar>
       <div class="md-toolbar-tools"> 
           <md-menu>
@@ -18,14 +18,45 @@
                 <md-menu-item><md-button>Help</md-button></md-menu-item>
                 <md-menu-item><md-button>About</md-button></md-menu-item>
                 <md-menu-item><md-button>Log Out</md-button></md-menu-item>
+            </md-menu-content>
           </md-menu>
           <span class="md-display-1" style="font-family: 'Rationale', sans-serif;">INTEL Reference</span>
           <span flex></span>
           <ds-widget-clock show-digital theme="blue-light" digital-format="'hh:mm:ss a'"></ds-widget-clock>
-          <md-button class="md-fab md-icon-button md-primary" aria-label="User">
-            <md-tooltip>User</md-tooltip>
-            <img src="assets/user.png" style="width:100%;   padding-bottom: 50%;"/>
-          </md-button>
+          <md-menu md-offset="-300 40">
+            <md-button class="md-fab md-icon-button md-primary" aria-label="User" ng-click="$mdMenu.open($event)">
+              <md-tooltip>User</md-tooltip>
+              <img src="assets/user.png" style="width:100%;   padding-bottom: 50%;"/>
+            </md-button>
+            <md-menu-content width="4" class="user-info-box">
+               <md-card >        
+                <img ng-src="assets/user-banner.jpg" class="md-card-image user-info-image" alt="Washed Out">
+                <md-card-title>
+                  <md-card-title-text>
+                    <span class="md-headline">John Doe</span>
+                    <span class="md-subhead">Software Developer</span>
+                  </md-card-title-text>
+                  <md-card-title-media>
+                    <img ng-src="assets/user-avatar.png" class="md-media-sm card-media "></img>
+                  </md-card-title-media>
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="end center">
+                  <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
+                    <md-icon md-svg-src="assets/facebook.svg" aria-label="Facebook"></md-icon>
+                  </md-button>
+                  <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
+                    <md-icon md-svg-src="assets/twitter.svg" aria-label="Twitter"></md-icon>
+                  </md-button>
+                  <md-button aria-label="Hanghout" class="md-fab md-raised md-mini">
+                    <md-icon md-svg-src="assets/hanghout.svg" aria-label="Hanghout"></md-icon>
+                  </md-button>
+                  <md-button aria-label="Google Plus" class="md-fab md-raised md-mini">
+                    <md-icon md-svg-src="assets/google-plus.svg" aria-label="Google Plus"></md-icon>
+                  </md-button>
+                </md-card-actions>
+              </md-card>
+            </md-menu-content>
+          </md-menu>
 
        </div>
     </md-toolbar>
