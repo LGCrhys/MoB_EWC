@@ -132,8 +132,7 @@ app
   }, 200);
   vm.datatable = DataService.getFilteredRadarsList(filterCriteria).radars;
 
-})
-.controller("LeafletMapsController", function($scope,$rootScope,DataService,leafletData, filterCriteria) {
+}).controller("LeafletMapsController", function($scope,$rootScope,DataService,leafletData, filterCriteria) {
 
     $scope.hostile = true;
     $scope.inconnu = true;
