@@ -29,7 +29,8 @@
     "leaflet-draw": "leaflet.draw#^0.4.9",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet-timedimension": "^1.0.6",
-    "iso8601-js-period": "*"
+    "iso8601-js-period": "*",
+    "leaflet-polylinedecorator": "^1.1.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

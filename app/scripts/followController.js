@@ -2,14 +2,31 @@
 var app = angular.module('intelRef');
 
 app
-.controller("FollowController", function($scope,$rootScope,DataService,leafletData, filterCriteria) {
+.controller("FollowController", function($scope,$rootScope,leafletData) {
 
-    angular.extend($scope, {
+	angular.extend($scope, {
         center: {
 	        lat: 48.4000000,
 	        lng: -4.4833300,
 	        zoom: 8
 	    },
+	    decorations: {
+            markers: {
+                coordinates: _.pluck(trajectory, "pos"),
+                patterns: [
+                    {
+                        offset: 12,
+                        repeat: 25,
+                        symbol: L.Symbol.dash({pixelSize: 10, pathOptions: {color: '#f00', weight: 2}})
+                    },
+                    {
+                        offset: 0,
+                        repeat: 25,
+                        symbol: L.Symbol.dash({pixelSize: 0})
+                    }
+                ]
+            }
+        },
         controls: {
             fullscreen: {
                 position: 'topleft'
@@ -90,23 +107,21 @@ app
 
 	var drawControl = new L.Control.Draw(options);
 
-    var boatMarker = L.boatMarker(new L.LatLng(48.735572, -4.930420), {
-		color: "#f1c40f",
-		idleCircle: false  
+    var boatMarker = L.boatMarker(new L.LatLng(trajectory[0].pos[0],trajectory[0].pos[1]), {
+		color: "#2196f3",
+		idleCircle: false,
 		});
 
-	var startDate = new Date();
-	startDate.setUTCMinutes(0, 0, 0);
-
 	var timeDimension = new L.TimeDimension({		
-	        timeInterval: "2014-09-30/2014-10-30",	
-	        period: "PT5M"
+	        timeInterval: "2017-02-14/2017-02-17",	
+	        period: "PT1H",
+	        currentTime: new Date("2017-02-14")
 	    });
 
 	var player = new L.TimeDimension.Player({
-	    transitionTime: 100, 
+	    transitionTime: 500, 
 	    loop: false,
-	    startOver:true
+	    startOver:false
 	}, timeDimension);
 
 	var timeDimensionControlOptions = {
@@ -117,6 +132,7 @@ app
         loopButton: true,
 	    minSpeed: 1,
 	    speedStep: 0.5,
+	    speed: 5,
 	    maxSpeed: 15,
 	    timeSliderDragUpdate: true
 	};
@@ -131,6 +147,9 @@ app
     	map.addLayer(boatMarker);
 		map.addControl(drawControl);
 		map.addControl(timeDimensionControl);
+
+		boatMarker.setHeading(trajectory[0].heading);
+		
 		leafletData.getLayers().then(function(baselayers) {
             map.on('draw:created', function (e) {
               var layer = e.layer;
@@ -138,5 +157,16 @@ app
               console.log(JSON.stringify(layer.toGeoJSON()));
             });
         });
+        map.timeDimension.on('timeload', function(data) {
+        	var position = _.find(trajectory, function(pos){
+        		return pos.time === data.time;
+        	});
+        	if(position){
+	        	boatMarker.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
+				boatMarker.setHeading(position.heading);
+	        }
+	    });
     });
+
+
 });
