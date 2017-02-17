@@ -139,6 +139,8 @@ app
 
 	var timeDimensionControl = new L.Control.TimeDimension(timeDimensionControlOptions);
 
+	var measureControl = new L.Control.Measure({});
+
     leafletData.getMap().then(function(map) {    	
 		// helper to share the timeDimension object between all layers
 		map.timeDimension = timeDimension; 
@@ -147,6 +149,7 @@ app
     	map.addLayer(boatMarker);
 		map.addControl(drawControl);
 		map.addControl(timeDimensionControl);
+		map.addControl(measureControl);
 
 		boatMarker.setHeading(trajectory[0].heading);
 		var div = $('<div>').load('partials/boatDescription.html', function(content){

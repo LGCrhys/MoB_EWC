@@ -193,6 +193,7 @@ form {
   background-color: rgb(25, 41, 100);
   margin: 0 0;
   line-height: 1.4;
+  color: white;
 }
 
 .leaflet-container a.leaflet-popup-close-button {
