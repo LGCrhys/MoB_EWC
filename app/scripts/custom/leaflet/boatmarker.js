@@ -167,6 +167,7 @@ L.boatMarker = function(pos, options) {
 	var c = ("color" in options) ? options.color : "#f1c40f";
 	var i = ("idleCircle" in options) ? options.idleCircle : false;
 	options.icon = new L.BoatIcon({ color: c, idleCircle: i});
+	options.clickable = true;
 
     return new L.BoatMarker(pos, options);
 };

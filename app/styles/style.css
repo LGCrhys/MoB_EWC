@@ -122,6 +122,24 @@ form {
   height: 50px;
 }
 
+.ship-info-image{
+  width: 260px;
+}
+
+.ship-card{
+  background-color: rgb(25, 41, 100);
+  color: white;
+  margin: 0;
+}
+
+.ship-card md-card-title{
+  padding: 0;
+}
+
+.ship-card md-card-content{
+  padding: 0;
+}
+
 .md-open-menu-container{
   box-shadow: none;
 }
@@ -167,4 +185,21 @@ form {
 }
 .ami.active{
   background: green;
+}
+
+/* LEAFLET POPUP*/
+
+.leaflet-popup-content {
+  background-color: rgb(25, 41, 100);
+  margin: 0 0;
+  line-height: 1.4;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+    color: white;
+}
+
+.leaflet-popup-content-wrapper {
+  padding: 0;
+  border-radius: 15px;
 }

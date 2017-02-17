@@ -2,7 +2,7 @@
 var app = angular.module('intelRef');
 
 app
-.controller("FollowController", function($scope,$rootScope,leafletData) {
+.controller("FollowController", function($scope,$rootScope,$templateCache,leafletData) {
 
 	angular.extend($scope, {
         center: {
@@ -109,8 +109,8 @@ app
 
     var boatMarker = L.boatMarker(new L.LatLng(trajectory[0].pos[0],trajectory[0].pos[1]), {
 		color: "#2196f3",
-		idleCircle: false,
-		});
+		idleCircle: false
+	});
 
 	var timeDimension = new L.TimeDimension({		
 	        timeInterval: "2017-02-14/2017-02-17",	
@@ -149,6 +149,9 @@ app
 		map.addControl(timeDimensionControl);
 
 		boatMarker.setHeading(trajectory[0].heading);
+		var div = $('<div>').load('partials/boatDescription.html', function(content){
+			boatMarker.bindPopup(content);
+		});
 		
 		leafletData.getLayers().then(function(baselayers) {
             map.on('draw:created', function (e) {
