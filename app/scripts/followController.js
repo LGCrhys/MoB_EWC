@@ -10,7 +10,7 @@ app
 	        lng: -4.4833300,
 	        zoom: 8
 	    },
-	    decorations: {
+	    trajectory: {
             markers: {
                 coordinates: _.pluck(trajectory, "pos"),
                 patterns: [
@@ -25,6 +25,27 @@ app
                         symbol: L.Symbol.dash({pixelSize: 0})
                     }
                 ]
+            }
+        },
+        markers: {
+            Radar : {
+                lat: 48.687334,
+                lng: -4.010010,
+                draggable: false,
+                icon: {
+	  	      		type: 'awesomeMarker',
+	                icon: 'star',
+	                markerColor: 'orange'
+	              }
+            }
+        },
+        paths: {
+            RadarVision: {
+                weight: 2,
+                color: '#ff612f',
+                latlngs: {lat:48.687334, lng:-4.010010},
+                radius: 100,
+                type: 'circleMarker'
             }
         },
         controls: {
