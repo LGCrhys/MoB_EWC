@@ -27,27 +27,6 @@ app
                 ]
             }
         },
-        markers: {
-            Radar : {
-                lat: 48.687334,
-                lng: -4.010010,
-                draggable: false,
-                icon: {
-	  	      		type: 'awesomeMarker',
-	                icon: 'star',
-	                markerColor: 'orange'
-	              }
-            }
-        },
-        paths: {
-            RadarVision: {
-                weight: 2,
-                color: '#ff612f',
-                latlngs: {lat:48.687334, lng:-4.010010},
-                radius: 100,
-                type: 'circleMarker'
-            }
-        },
         controls: {
             fullscreen: {
                 position: 'topleft'
@@ -133,6 +112,8 @@ app
 		idleCircle: false
 	});
 
+	var radarMarker = L.radarMarker(new L.LatLng(48.687334,-4.010010),"orange");
+
 	var timeDimension = new L.TimeDimension({		
 	        timeInterval: "2017-02-14/2017-02-17",	
 	        period: "PT1H",
@@ -168,6 +149,7 @@ app
 		// otherwise you have to set the 'timeDimension' option on all layers.
 		map.addLayer(editableLayers);
     	map.addLayer(boatMarker);
+    	map.addLayer(radarMarker);
 		map.addControl(drawControl);
 		map.addControl(timeDimensionControl);
 		map.addControl(measureControl);
@@ -181,7 +163,6 @@ app
             map.on('draw:created', function (e) {
               var layer = e.layer;
               editableLayers.addLayer(layer);
-              console.log(JSON.stringify(layer.toGeoJSON()));
             });
         });
         map.timeDimension.on('timeload', function(data) {
