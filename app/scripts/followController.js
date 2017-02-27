@@ -4,6 +4,8 @@ var app = angular.module('intelRef');
 app
 .controller("FollowController", function($scope,$rootScope,$templateCache,leafletData) {
 
+	$('#toolbar-title').first().text('Follow');
+
 	angular.extend($scope, {
         center: {
 	        lat: 48.4000000,
