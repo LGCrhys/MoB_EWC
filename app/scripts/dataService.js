@@ -90,7 +90,7 @@ angular.module('intelRef')
             chart: {
                 id: id,
                 type: 'sunburstChart',
-                color: function e(e,i){
+                color: function (e){
                   return colorsByType[e.toLowerCase()];
                 },
                 key: function (d){return d.key;},
