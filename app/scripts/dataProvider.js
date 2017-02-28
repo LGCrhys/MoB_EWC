@@ -19,6 +19,7 @@
 
   function shouldUpdateFilteredList(filterCriteria){
     if(!storedFilterCriteria) return true;
+    if(!filterCriteria) return false;
     return filterCriteria.frequence.min !== storedFilterCriteria.frequence.min
             || filterCriteria.frequence.max !== storedFilterCriteria.frequence.max
             || filterCriteria.type !== storedFilterCriteria.type
@@ -57,32 +58,33 @@
       radarsCarriers:originalRadars.radarsCarriers.slice(),
       radarsLocs:originalRadars.radarsLocs.slice()
     }
+    if(filterCriteria){
+      if(filterCriteria.type){
+        filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
+        filteredRadarsList.radarsLocs = [];
+        filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
+      }
+      if(filterCriteria.subType){
+        filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.subType===filterCriteria.subType;});
+        filteredRadarsList.radarsLocs = [];
+        filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
+      }
+      if(filterCriteria.name){
+        filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return radar.nom === filterCriteria.name})
+        filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.nom === filterCriteria.name})
+        filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return radar.nom === filterCriteria.name})
+      }
 
-    if(filterCriteria.type){
-      filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.type===filterCriteria.type});
-      filteredRadarsList.radarsLocs = [];
-      filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
-    }
-    if(filterCriteria.subType){
-      filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.subType===filterCriteria.subType;});
-      filteredRadarsList.radarsLocs = [];
-      filteredRadarsList.radars = filteredRadarsList.radarsCarriers.concat(filteredRadarsList.radarsLocs);
-    }
-    if(filterCriteria.name){
-      filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return radar.nom === filterCriteria.name})
-      filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return radar.nom === filterCriteria.name})
-      filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return radar.nom === filterCriteria.name})
-    }
-
-    if(filterCriteria.hostilities){
-      filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
-      filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
-      filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
-    }
-    if (filterCriteria.frequence){
-      filteredRadarsList.radars = filterByFrequencies(filteredRadarsList.radars, [filterCriteria.frequence.min,filterCriteria.frequence.max]);
-      filteredRadarsList.radarsCarriers=filterByFrequencies(filteredRadarsList.radarsCarriers, [filterCriteria.frequence.min,filterCriteria.frequence.max]);
-      filteredRadarsList.radarsLocs=filterByFrequencies(filteredRadarsList.radarsLocs, [filterCriteria.frequence.min,filterCriteria.frequence.max]);
+      if(filterCriteria.hostilities){
+        filteredRadarsList.radars = _.filter(filteredRadarsList.radars, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
+        filteredRadarsList.radarsCarriers = _.filter(filteredRadarsList.radarsCarriers, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
+        filteredRadarsList.radarsLocs = _.filter(filteredRadarsList.radarsLocs, function(radar){return _.contains(filterCriteria.hostilities,radar.hostilite.toLowerCase())})
+      }
+      if (filterCriteria.frequence){
+        filteredRadarsList.radars = filterByFrequencies(filteredRadarsList.radars, [filterCriteria.frequence.min,filterCriteria.frequence.max]);
+        filteredRadarsList.radarsCarriers=filterByFrequencies(filteredRadarsList.radarsCarriers, [filterCriteria.frequence.min,filterCriteria.frequence.max]);
+        filteredRadarsList.radarsLocs=filterByFrequencies(filteredRadarsList.radarsLocs, [filterCriteria.frequence.min,filterCriteria.frequence.max]);
+      }
     }
   }
 

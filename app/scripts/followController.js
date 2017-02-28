@@ -2,7 +2,7 @@
 var app = angular.module('intelRef');
 
 app
-.controller("FollowController", function($scope,$rootScope,$templateCache,leafletData) {
+.controller("FollowController", function($scope,$rootScope,$templateCache,leafletData, DataService) {
 
 	$('#toolbar-title').first().text('Follow');
 
@@ -114,7 +114,23 @@ app
 		idleCircle: false
 	});
 
-	var radarMarker = L.radarMarker(new L.LatLng(48.687334,-4.010010),"orange");
+
+	var generateRadarMarkers = function(points) {
+      var markers = [];
+      //LatLng(46.83013, -7.36084),LatLng(50.47149, -7.36084),LatLng(50.47149, 0.09888),LatLng(46.83013, 0.09888)
+      var corner1 = L.latLng(46.83013, -7.36084),
+	  corner2 = L.latLng(50.47149, 0.09888),
+	  bounds = L.latLngBounds(corner1, corner2);
+      points.map(function(ap) {
+      	var point = new L.LatLng(parseFloat(ap.latitude.replace(',','.')),parseFloat(ap.longitude.replace(',','.')));
+      	if(markers.length < 20 && bounds.contains(point)){
+        	markers.push(L.radarMarker(point,"orange"));
+    	}
+      });
+      return markers;
+    };
+
+    var radarMarkers = generateRadarMarkers(DataService.getFilteredLocs());
 
 	var timeDimension = new L.TimeDimension({		
 	        timeInterval: "2017-02-14/2017-02-17",	
@@ -151,7 +167,9 @@ app
 		// otherwise you have to set the 'timeDimension' option on all layers.
 		map.addLayer(editableLayers);
     	map.addLayer(boatMarker);
-    	map.addLayer(radarMarker);
+    	_.each(radarMarkers, function(radarMarker){
+    		map.addLayer(radarMarker);
+    	})
 		map.addControl(drawControl);
 		map.addControl(timeDimensionControl);
 		map.addControl(measureControl);

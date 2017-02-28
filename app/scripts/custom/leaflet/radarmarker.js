@@ -10,12 +10,14 @@ L.RadarGroup = L.LayerGroup.extend({
         map.timeDimension.on('timeload', _.bind(this.checkDetections, this, map));
 	},
 	checkDetections: function(map, e){
+		var boatDetected = false;
 		map.eachLayer(function (layer) { 
 		    if(layer.options && layer.options.type === "boatmarker"){
-		    	var color = this.vision.getBounds().contains(layer.getLatLng()) ? 'red' : this.initialColor;
-		    	this.vision.setStyle({fillColor: color, color: color});
+		    	boatDetected = this.vision.getBounds().contains(layer.getLatLng());
 		    }
-		},this);
+		},this);		
+    	var color = boatDetected ? 'red' : this.initialColor;
+    	this.vision.setStyle({fillColor: color, color: color});
 	}
 });
 
@@ -30,7 +32,7 @@ L.radarMarker = function(pos, color) {
 	              });
 
 	marker = new L.Marker(pos, optionsRadar);
-	vision = new L.circle((pos), 50000, optionsVision);
+	vision = new L.circle((pos), 40000, optionsVision);
 
     return new L.RadarGroup(marker,vision);
 };
