@@ -14,7 +14,7 @@ app
 	    },
 	    trajectory: {
             markers: {
-                coordinates: _.pluck(trajectory, "pos"),
+                coordinates: _.pluck(trajectory.tracks, "pos"),
                 patterns: [
                     {
                         offset: 12,
@@ -109,7 +109,7 @@ app
 
 	var drawControl = new L.Control.Draw(options);
 
-    var boatMarker = L.boatMarker(new L.LatLng(trajectory[0].pos[0],trajectory[0].pos[1]), {
+    var boatMarker = L.boatMarker(new L.LatLng(trajectory.tracks[0].pos[0],trajectory.tracks[0].pos[1]), {
 		color: "#2196f3",
 		idleCircle: false
 	});
@@ -156,9 +156,10 @@ app
 		map.addControl(timeDimensionControl);
 		map.addControl(measureControl);
 
-		boatMarker.setHeading(trajectory[0].heading);
+		boatMarker.setHeading(trajectory.tracks[0].heading);
+
 		var div = $('<div>').load('partials/boatDescription.html', function(content){
-			boatMarker.bindPopup(content);
+			boatMarker.bindPopup(Mustache.render(content,trajectory.informations));
 		});
 		
 		leafletData.getLayers().then(function(baselayers) {
@@ -168,7 +169,7 @@ app
             });
         });
         map.timeDimension.on('timeload', function(data) {
-        	var position = _.find(trajectory, function(pos){
+        	var position = _.find(trajectory.tracks, function(pos){
         		return pos.time === data.time;
         	});
         	if(position){

@@ -1,16 +1,13 @@
 <md-card class="ship-card" > 
-    <img src="assets/ship-image.jpg" class="md-card-image ship-info-image" alt="Washed Out">     
+    <img src="{{image}}" class="md-card-image ship-info-image" alt="Washed Out">     
 	<md-card-title>
 	  <md-card-title-text>
-	    <span class="md-headline">FREgate Multi-Missions</span>
+	    <span class="md-headline">{{name}}</span>
 	  </md-card-title-text>	  
 	</md-card-title>
 	<md-card-content>
-		<b>Type : </b> Frégate <br/>
-		<b>Longueur : </b> 142m <br/>
-		<b>Maître-bau : </b> 19m <br/>
-		<b>Tirant-d'eau : </b> 7,30m <br/>
-		<b>Vitesse : </b> 27 noeuds <br/>
-		<b>Rayon d'action : </b> 6000 nautiques à 15 noeuds<br/>
+		{{#metadata}}
+	  		<b>{{label}} : </b> {{value}} <br/>
+		{{/metadata}}
 	</md-card-content>
 </md-card>

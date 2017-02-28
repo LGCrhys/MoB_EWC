@@ -67,6 +67,7 @@ module.exports = function(config) {
       'bower_components/leaflet-timedimension/dist/leaflet.timedimension.src.js',
       'bower_components/leaflet-polylinedecorator/leaflet.polylineDecorator.js',
       'bower_components/leaflet-measure/dist/leaflet-measure.min.js',
+      'bower_components/mustache.js/mustache.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
