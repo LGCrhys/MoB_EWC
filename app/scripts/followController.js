@@ -124,7 +124,7 @@ app
       points.map(function(ap) {
       	var point = new L.LatLng(parseFloat(ap.latitude.replace(',','.')),parseFloat(ap.longitude.replace(',','.')));
       	if(markers.length < 20 && bounds.contains(point)){
-        	markers.push(L.radarMarker(point,"orange"));
+        	markers.push(L.radarMarker(point,(ap.hostilite==="Hostile")?'red':((ap.hostilite==="Ami")?'green':'orange')));
     	}
       });
       return markers;

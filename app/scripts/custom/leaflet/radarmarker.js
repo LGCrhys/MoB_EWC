@@ -16,7 +16,7 @@ L.RadarGroup = L.LayerGroup.extend({
 		    	boatDetected = this.vision.getBounds().contains(layer.getLatLng());
 		    }
 		},this);		
-    	var color = boatDetected ? 'red' : this.initialColor;
+    	var color = boatDetected ? 'red' : 'gold';
     	this.vision.setStyle({fillColor: color, color: color});
 	}
 });
@@ -24,7 +24,7 @@ L.RadarGroup = L.LayerGroup.extend({
 L.radarMarker = function(pos, color) {
 
 	var optionsRadar = {draggable: false, clickable: true},
-		optionsVision = {weight: 2, color: color};
+		optionsVision = {weight: 2, color: 'gold'};
 	
 	optionsRadar.icon = new L.AwesomeMarkers.icon({
 	                icon: 'star',
