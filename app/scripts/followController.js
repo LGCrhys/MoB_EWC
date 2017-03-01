@@ -29,7 +29,7 @@ app
         center: {
 	        lat: 48.4000000,
 	        lng: -4.4833300,
-	        zoom: 8
+	        zoom: 7
 	    },
 	    trajectory: trajectories,
         controls: {
