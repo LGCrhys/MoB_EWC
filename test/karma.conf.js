@@ -52,7 +52,6 @@ module.exports = function(config) {
       'bower_components/leaflet/dist/leaflet-src.js',
       'bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
       'bower_components/leaflet-search/dist/leaflet-search.src.js',
-      'bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js',
       'bower_components/angular-aria/angular-aria.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-material/angular-material.js',
@@ -68,6 +67,8 @@ module.exports = function(config) {
       'bower_components/leaflet-polylinedecorator/leaflet.polylineDecorator.js',
       'bower_components/leaflet-measure/dist/leaflet-measure.min.js',
       'bower_components/mustache.js/mustache.js',
+      'bower_components/esri-leaflet/dist/esri-leaflet.js',
+      'bower_components/leaflet.markercluster/dist/leaflet.markercluster-src.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

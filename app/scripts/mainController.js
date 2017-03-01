@@ -212,30 +212,24 @@ app
         },
         layers: {
             baselayers: {
-                bingAerial: {
-	                name: 'Bing Aerial',
-	                type: 'bing',
-	                key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
-	                layerOptions: {
-	                    type: 'Aerial'
-	                }
-	            },
-	            bingRoad: {
-	                name: 'Bing Road',
-	                type: 'bing',
-	                key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
-	                layerOptions: {
-	                    type: 'Road'
-	                }
-	            },
-	            bingAerialWithLabels: {
-	                name: 'Bing Aerial With Labels',
-	                type: 'bing',
-	                key: 'Aj6XtE1Q1rIvehmjn2Rh1LR2qvMGZ-8vPS9Hn3jCeUiToM77JFnf-kFRzyMELDol',
-	                layerOptions: {
-	                    type: 'AerialWithLabels'
-	                }
-	            },
+                imagery: {
+                    name: "Imagery",
+                    type: "agsBase",
+                    layer: "Imagery",
+                    visible: false
+                },
+                streets: {
+                  name: "Streets",
+                    type: "agsBase",
+                    layer: "Streets",
+                    visible: false
+                },
+                national: {
+                    name: "National Geographic",
+                    type: "agsBase",
+                    layer: "NationalGeographic",
+                    visible: false
+                }
             },
             overlays: {
                 locs: {
@@ -250,13 +244,6 @@ app
     leafletData.getLayers().then(function(layers) {
         $scope.markerClusterGrp = layers.overlays.locs;
         var clusters            = $scope.markerClusterGrp.getLayers();
-        $scope.markerClusterGrp.on('clusterclick', function (a) {
-            var clusterObjects = a.layer.getAllChildMarkers();
-            //TODO
-        });
-        $scope.markerClusterGrp.on('click', function(a){
-        	//TODO
-        })
     });
 
     leafletData.getMap().then(function(map) {
