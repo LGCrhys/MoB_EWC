@@ -12,6 +12,7 @@ L.RadarGroup = L.LayerGroup.extend({
 	checkDetections: function(map, e){
 		var boatDetected = false;
 		map.eachLayer(function (layer) { 
+			if(boatDetected) return;
 		    if(layer.options && layer.options.type === "boatmarker"){
 		    	boatDetected = this.vision.getBounds().contains(layer.getLatLng());
 		    }

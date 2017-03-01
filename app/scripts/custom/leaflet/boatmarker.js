@@ -2,12 +2,12 @@ L.BoatIcon = L.Icon.extend({
 
 	// OPTIONS
 	options: {
-		iconSize: new L.Point(150, 150),
+		iconSize: new L.Point(100, 100),
 		className: "leaflet-boat-icon",
 		course: 0,
 		speed: 0,
 		color: "#8ED6FF",
-		labelAnchor: [23, 0],
+		labelAnchor: [15, 0],
 		wind: false,
 		windDirection: 0,
 		windSpeed: 0,
@@ -15,8 +15,8 @@ L.BoatIcon = L.Icon.extend({
 	},
 
 	// PROPERTIES
-	x: 66,
-	y: 85,
+	x: 41,
+	y: 60,
 	x_fac: 0.18,
 	y_fac: 0.18,
 	ctx: null,
@@ -32,7 +32,7 @@ L.BoatIcon = L.Icon.extend({
 
 		e.width = s.x;
 		e.height = s.y;
-		this.lastHeading = 0;   // reset in case the marker is removed and added again
+		this.lastHeading = this.options.course;   // reset in case the marker is removed and added again
 
 		this.ctx = e.getContext("2d");
 		this.draw(this.ctx, s.x, s.y);
@@ -162,13 +162,18 @@ L.BoatMarker = L.Marker.extend({
 	}
 });
 
-L.boatMarker = function(pos, options) {
+L.boatMarker = function(trajectory, options) {
 
 	var c = ("color" in options) ? options.color : "#f1c40f";
 	var i = ("idleCircle" in options) ? options.idleCircle : false;
-	options.icon = new L.BoatIcon({ color: c, idleCircle: i});
+
+	options.icon = new L.BoatIcon({ color: c, idleCircle: i, course:trajectory.tracks[0].heading % 360});
+	//	options.icon.setHeading(trajectory.tracks[0].heading % 360);
+
 	options.clickable = true;
 	options.type = "boatmarker";
+
+	var pos = new L.LatLng(trajectory.tracks[0].pos[0],trajectory.tracks[0].pos[1]);
 
     return new L.BoatMarker(pos, options);
 };

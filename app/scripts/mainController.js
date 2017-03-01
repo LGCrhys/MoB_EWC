@@ -9,8 +9,6 @@ app
 .controller('MainCtrl', function($scope, $timeout, $rootScope,DataService, filterCriteria) {
   var vm = this;
 
-  $('#toolbar-title').first().text('INTEL Reference');
-
   vm.gridsterOptions = {
 		margins: [10, 10],
 		columns: 4,
@@ -139,6 +137,8 @@ app
     $scope.hostile = true;
     $scope.inconnu = true;
     $scope.ami = true;
+
+    $('#toolbar-title').first().text('INTEL Reference');
 
     var addressPointsToMarkers = function(points) {
       var markers = [];
