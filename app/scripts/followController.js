@@ -112,47 +112,13 @@ app
 
 	var drawControl = new L.Control.Draw(options);
 
-    var boatMarker = L.boatMarker(trajectory[0], {
-		color: "#2196f3",
-		idleCircle: false
+	var boatMarkers = [];
+	_.each(trajectory, function(t){
+		boatMarkers.push(L.boatMarker(t, {
+			color: "#2196f3",
+			idleCircle: false
+		}));
 	});
-	var boatMarker1 = L.boatMarker(trajectory[1], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker2 = L.boatMarker(trajectory[2], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker3 = L.boatMarker(trajectory[3], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker4 = L.boatMarker(trajectory[4], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker5 = L.boatMarker(trajectory[5], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker6 = L.boatMarker(trajectory[6], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker7 = L.boatMarker(trajectory[7], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker8 = L.boatMarker(trajectory[8], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-	var boatMarker9 = L.boatMarker(trajectory[9], {
-		color: "#2196f3",
-		idleCircle: false
-	});
-
 
 	var generateRadarMarkers = function(points) {
       var markers = [];
@@ -205,33 +171,21 @@ app
 		map.timeDimension = timeDimension; 
 		// otherwise you have to set the 'timeDimension' option on all layers.
 		map.addLayer(editableLayers);
-    	map.addLayer(boatMarker);
+    	//map.addLayer(boatMarker);
     	_.each(radarMarkers, function(radarMarker){
     		map.addLayer(radarMarker);
+    	})
+    	_.each(boatMarkers, function(boatMarker){
+    		map.addLayer(boatMarker);
     	})
 		map.addControl(drawControl);
 		map.addControl(timeDimensionControl);
 		map.addControl(measureControl);
-    	map.addLayer(boatMarker1);
-    	map.addLayer(boatMarker2);
-    	map.addLayer(boatMarker3);
-    	map.addLayer(boatMarker4);
-    	map.addLayer(boatMarker5);
-    	map.addLayer(boatMarker6);
-    	map.addLayer(boatMarker7);
-    	map.addLayer(boatMarker8);
-    	map.addLayer(boatMarker9);
+		
 		var div = $('<div>').load('partials/boatDescription.html', function(content){
-			boatMarker.bindPopup(Mustache.render(content,trajectory[0].informations));
-			boatMarker1.bindPopup(Mustache.render(content,trajectory[1].informations));
-			boatMarker2.bindPopup(Mustache.render(content,trajectory[2].informations));
-			boatMarker3.bindPopup(Mustache.render(content,trajectory[3].informations));
-			boatMarker4.bindPopup(Mustache.render(content,trajectory[4].informations));
-			boatMarker5.bindPopup(Mustache.render(content,trajectory[5].informations));
-			boatMarker6.bindPopup(Mustache.render(content,trajectory[6].informations));
-			boatMarker7.bindPopup(Mustache.render(content,trajectory[7].informations));
-			boatMarker8.bindPopup(Mustache.render(content,trajectory[8].informations));
-			boatMarker9.bindPopup(Mustache.render(content,trajectory[9].informations));
+			_.each(trajectory, function(t,i){
+				boatMarkers[i].bindPopup(Mustache.render(content,t.informations));				
+			});
 		});
 		
 		leafletData.getLayers().then(function(baselayers) {
@@ -241,76 +195,15 @@ app
             });
         });
         map.timeDimension.on('timeload', function(data) {
-        	var position = _.find(trajectory[0].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[1].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker1.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker1.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[2].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker2.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker2.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[3].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker3.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker3.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[4].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker4.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker4.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[5].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker5.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker5.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[6].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker6.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker6.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[7].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker7.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker7.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[8].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker8.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker8.setHeading(position.heading);
-	        }
-        	var position = _.find(trajectory[9].tracks, function(pos){
-        		return pos.time === data.time;
-        	});
-        	if(position){
-	        	boatMarker9.setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
-				boatMarker9.setHeading(position.heading);
-	        }
+        	_.each(trajectory, function(t,i){
+				var position = _.find(t.tracks, function(pos){
+	        		return pos.time === data.time;
+	        	});
+	        	if(position){
+		        	boatMarkers[i].setLatLng(new L.LatLng(position.pos[0],position.pos[1]));
+					boatMarkers[i].setHeading(position.heading);
+		        }
+			});
 	    });
     });
 
