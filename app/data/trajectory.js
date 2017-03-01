@@ -7,9 +7,9 @@ var trajectory = [
 				{label: "Type", value:"Frégate"},
 				{label: "Longueur", value:"142m"},
 				{label: "Maître-bau", value:"19m"},
-				{label: "Tirant-d'eau", value:"7,30m"},
+				{label: "Tirant d'eau", value:"7,30m"},
 				{label: "Vitesse", value:"27 noeuds"},
-				{label: "Rayon D'action", value:"6000 nautiques à 15 noeuds"}
+				{label: "Rayon d'action", value:"6000 nautiques à 15 noeuds"}
 			]
 		},
 		tracks : [
@@ -96,9 +96,9 @@ var trajectory = [
 				{label: "Type", value:"Patrouilleur"},
 				{label: "Longueur", value:"87m"},
 				{label: "Maître-bau", value:"13m"},
-				{label: "Tirant-d'eau", value:"3,30m"},
+				{label: "Tirant d'eau", value:"3,30m"},
 				{label: "Vitesse", value:"21 noeuds"},
-				{label: "Rayon D'action", value:"8 000 milles à 12 nœuds"}
+				{label: "Rayon d'action", value:"8 000 milles à 12 nœuds"}
 			]
 		},
 		tracks : [
@@ -185,8 +185,8 @@ var trajectory = [
 				{label: "Type", value:"Aviso"},
 				{label: "Longueur", value:"80,50m"},
 				{label: "Maître-bau", value:"10,30m"},
-				{label: "Tirant-d'eau", value:"5,60m"},
-				{label: "Tirant-d'air", value:"26m"},
+				{label: "Tirant d'eau", value:"5,60m"},
+				{label: "Tirant d'air", value:"26m"},
 				{label: "Vitesse", value:"24 noeuds"}
 			]
 		},
@@ -274,9 +274,9 @@ var trajectory = [
 				{label: "Type", value:"Porte-avions"},
 				{label: "Longueur", value:"261,50m"},
 				{label: "Maître-bau", value:"64,36m"},
-				{label: "Tirant-d'eau", value:"12,50m"},
+				{label: "Tirant d'eau", value:"12,50m"},
 				{label: "Vitesse", value:"27 noeuds"},
-				{label: "Rayon D'action", value:"Illimité - 45 jours de vivres"}
+				{label: "Rayon d'action", value:"Illimité - 45 jours de vivres"}
 			]
 		},
 		tracks :[
@@ -363,9 +363,9 @@ var trajectory = [
 				{label: "Type", value:"Frégate"},
 				{label: "Longueur", value:"125m"},
 				{label: "Maître-bau", value:"15,40m"},
-				{label: "Tirant-d'eau", value:"4,80m"},
+				{label: "Tirant d'eau", value:"4,80m"},
 				{label: "Vitesse", value:"25 noeuds"},
-				{label: "Rayon D'action", value:"7000 nautiques à 15 noeuds"}
+				{label: "Rayon d'action", value:"7000 nautiques à 15 noeuds"}
 			]
 		},
 		tracks : [
@@ -452,9 +452,9 @@ var trajectory = [
 				{label: "Type", value:"Bâtiment d'essais et de mesures"},
 				{label: "Longueur", value:"230m"},
 				{label: "Maître-bau", value:"30m"},
-				{label: "Tirant-d'eau", value:"7,70m"},
+				{label: "Tirant d'eau", value:"7,70m"},
 				{label: "Vitesse", value:"17,3 noeuds"},
-				{label: "Rayon D'action", value:"22 000 nautiques à 15 nœuds"}
+				{label: "Rayon d'action", value:"22 000 nautiques à 15 nœuds"}
 			]
 		},
 		tracks : [
@@ -541,7 +541,7 @@ var trajectory = [
 				{label: "Type", value:"Remorqueur d'intervention (RIAS)"},
 				{label: "Longueur", value:"80m"},
 				{label: "Maître-bau", value:"16,5m"},
-				{label: "Tirant-d'eau", value:"6m"},
+				{label: "Tirant d'eau", value:"6m"},
 				{label: "Vitesse", value:"19,5 noeuds"},
 				{label: "Capacité", value:"200 tonnes de traction au point fixe"}
 			]
@@ -630,9 +630,9 @@ var trajectory = [
 				{label: "Type", value:"Pétrolier ravitailleur"},
 				{label: "Longueur", value:"157,2m"},
 				{label: "Maître-bau", value:"21,2m"},
-				{label: "Tirant-d'eau", value:"10,80m"},
+				{label: "Tirant d'eau", value:"10,80m"},
 				{label: "Vitesse", value:"19 noeuds"},
-				{label: "Rayon D'action", value:"9 000 miles à 15 nœuds"}
+				{label: "Rayon d'action", value:"9 000 miles à 15 nœuds"}
 			]
 		},
 		tracks :[
@@ -719,9 +719,9 @@ var trajectory = [
 				{label: "Type", value:"Bâtiment hydrographique"},
 				{label: "Longueur", value:"59m"},
 				{label: "Maître-bau", value:"10,90m"},
-				{label: "Tirant-d'eau", value:"3,63m"},
+				{label: "Tirant d'eau", value:"3,63m"},
 				{label: "Puissance", value:"2500 ch"},
-				{label: "Rayon D'action", value:"6 000 nautiques à 12 nœuds"}
+				{label: "Rayon d'action", value:"6 000 nautiques à 12 nœuds"}
 			]
 		},
 		tracks :[
@@ -808,9 +808,9 @@ var trajectory = [
 				{label: "Type", value:"Navire de collecte de renseignement"},
 				{label: "Longueur", value:"101,70m"},
 				{label: "Maître-bau", value:"15,80m"},
-				{label: "Tirant-d'eau", value:"4,90m"},
+				{label: "Tirant d'eau", value:"4,90m"},
 				{label: "Vitesse", value:"16 noeuds"},
-				{label: "Rayon D'action", value:"3 400 nautiques à 16 nœuds"}
+				{label: "Rayon d'action", value:"3 400 nautiques à 16 nœuds"}
 			]
 		},
 		tracks :[
